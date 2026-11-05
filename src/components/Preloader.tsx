@@ -31,14 +31,18 @@ export default function Preloader() {
 
     const intro = gsap.timeline();
     intro
-      .to(ring, { strokeDashoffset: len * 0.15, duration: REDUCED ? 0.01 : 2.2, ease: 'power2.inOut' }, 0.15)
-      .fromTo(q('.preloader__fill'), { scaleY: 0 }, { scaleY: 0.85, duration: REDUCED ? 0.01 : 2.2, ease: 'power2.inOut' }, 0.3)
+      .to(ring, { strokeDashoffset: len * 0.15, duration: REDUCED ? 0.01 : 1.2, ease: 'power2.inOut' }, 0.1)
+      .fromTo(q('.preloader__fill'), { scaleY: 0 }, { scaleY: 0.85, duration: REDUCED ? 0.01 : 1.2, ease: 'power2.inOut' }, 0.3)
       .fromTo(q('.preloader__char'), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, stagger: 0.05, duration: 0.9, ease: 'expo.out' }, 0.5)
       .fromTo(q('.preloader__sub'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 }, 1.1);
 
-    const minTime = new Promise((r) => setTimeout(r, REDUCED ? 300 : 2400));
-    const maxTime = new Promise((r) => setTimeout(r, 9000));
-    const assets = Promise.all([document.fonts?.ready, import('../gl/Drink').then(() => Promise.race([glReady(), maxTime])), minTime]);
+    const minTime = new Promise((r) => setTimeout(r, REDUCED ? 300 : 1200));
+    // teto duro: nunca espera mais que 3,5s, mesmo que o import/shader demore
+    const maxTime = new Promise((r) => setTimeout(r, 3500));
+    const assets = Promise.race([
+      Promise.all([document.fonts?.ready, import('../gl/Drink').then(() => glReady()), minTime]),
+      maxTime,
+    ]);
 
     assets
       .catch(() => undefined)
