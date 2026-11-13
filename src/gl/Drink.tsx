@@ -67,7 +67,7 @@ export default function Drink({ mode, className, snap }: { mode: Mode; className
     let frames = 0;
     let quality = 1;
     const perf = { t: 0, n: 0, good: 0 };
-    const s = { build: 0, mx: 0, my: 0, t: 0, swap: 1, from: null as DrinkState | null, to: null as DrinkState | null };
+    const s = { build: 0, mx: 0, my: 0, t: 0, swap: 1, late: false, from: null as DrinkState | null, to: null as DrinkState | null };
 
     const resize = () => {
       if (!r) return;
@@ -113,7 +113,10 @@ export default function Drink({ mode, className, snap }: { mode: Mode; className
       if (hero) {
         s.build = damp(s.build, signals.build, REDUCED ? 30 : 6, dt);
         const since = signals.introAt < 0 ? 0 : (performance.now() - signals.introAt) / 1000;
-        const rise = REDUCED ? (signals.introAt < 0 ? 0 : 1) : introRise(since);
+        // primeiro quadro depois da cortina abrir (shader lento): entra já com a luz acesa,
+        // por cima da foto do hero, em vez de apagar e acender de novo
+        if (frames === 0 && signals.introAt >= 0) s.late = true;
+        const rise = REDUCED || s.late ? (signals.introAt < 0 ? 0 : 1) : introRise(since);
         pushState(u, buildState(s.build));
         const cam = camAt(s.build, aspect, s.mx, s.my, rise);
         u.uRo.set(cam.ro);
@@ -150,6 +153,8 @@ export default function Drink({ mode, className, snap }: { mode: Mode; className
       }
       u.uTime = s.t;
       r.draw();
+      // o canvas nasce invisível e aparece no primeiro quadro: nada de preto antes do shader
+      if (frames === 0 && canvas) canvas.style.opacity = '1';
 
       // o segundo quadro já saiu da GPU: avisa o preloader
       if (++frames === 2 && hero) announceReady();
@@ -177,7 +182,7 @@ export default function Drink({ mode, className, snap }: { mode: Mode; className
     const start = () => {
       if (r) return;
       canvas = document.createElement('canvas');
-      canvas.style.cssText = 'display:block;width:100%;height:100%';
+      canvas.style.cssText = 'display:block;width:100%;height:100%;opacity:0;transition:opacity .7s ease';
       el.appendChild(canvas);
       r = new DrinkRenderer(canvas, LITE);
       resize();

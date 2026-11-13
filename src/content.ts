@@ -205,6 +205,8 @@ export const hero = {
   /** o drink do hero é 3D: avisar e levar até as fotos de verdade */
   note: 'Animação ilustrativa',
   noteCta: 'ver fotos',
+  /** última frase do hero; a galeria vem logo em seguida */
+  outro: ['Agora veja', 'como fica na festa.'],
 };
 
 /** os seis tempos da montagem: `at` é onde cada um começa no scroll (0..1, ver gl/build.ts); `ml` e `temp` alimentam a ficha */

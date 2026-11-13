@@ -3,7 +3,7 @@ import path from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { brand } from './src/content';
-import { cleanProspect } from './src/prospect';
+import { brandPalette, cleanProspect } from './src/prospect';
 import { ogImage } from './scripts/og.mjs';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -15,9 +15,21 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
  */
 const PROSPECT_NAME = `(function(){try{
 var p=window.__PROSPECT||{},q=new URLSearchParams(location.search);
+var el=document.getElementById('preloader');
+var c=String(q.get('cor')||p.cor||'').trim().replace(/^#?/,'#');
+if(/^#[0-9a-f]{6}$/i.test(c)){
+  var L=function(x){return x.map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}).reduce(function(a,v,i){return a+v*[.2126,.7152,.0722][i]},0)};
+  var rgb=[1,3,5].map(function(i){return parseInt(c.substr(i,2),16)}),l=rgb,t=0;
+  while(L(l)<.42&&t<=1){l=rgb.map(function(v){return v+(255-v)*t});t+=.04;}
+  document.documentElement.style.setProperty('--rose-2','rgb('+l.map(Math.round).join(',')+')');
+}
+if(/^media\\/p\\/[a-z0-9-]+\\/logo\\.(png|svg)$/.test(String(p.logo||''))){
+  var m=el.querySelector('.preloader__mark'),img=document.createElement('img');
+  img.className='preloader__logo';img.alt='';img.src='./'+p.logo;m.textContent='';m.appendChild(img);
+}
 var b=String(q.get('bar')||p.bar||'').replace(/[\\u0000-\\u001f<>]/g,'').replace(/\\s+/g,' ').trim().slice(0,32);
 if(!b)return;
-var el=document.getElementById('preloader'),w=el.querySelector('.preloader__word');
+var w=el.querySelector('.preloader__word');
 w.textContent='';
 b.toUpperCase().split('').forEach(function(c,i){var s=document.createElement('span');s.className='preloader__char';s.style.setProperty('--i',i);s.textContent=c===' '?'\\u00a0':c;w.appendChild(s);});
 el.setAttribute('aria-label','Carregando '+b);
@@ -92,6 +104,53 @@ function setMeta(html: string, attr: 'name' | 'property', key: string, value: st
 }
 
 /**
+ * Fotos e logo do prospect: tudo o que estiver em prospects/<slug>/ (pasta fora do git).
+ *   - até 6 fotos (.jpg, .png, .webp, em ordem de nome) → dist/media/p/<slug>/<n>-900|1300|1800.webp,
+ *     as mesmas larguras que scripts/images.mjs gera para a galeria
+ *   - logo.png | logo.jpg | logo.webp | logo.svg → dist/media/p/<slug>/logo.png|svg
+ */
+async function prospectMedia(slug: string, outDir: string) {
+  const dir = path.resolve('prospects', slug);
+  const none = { fotos: [] as string[], logo: '', logoFile: '', cover: '' };
+  if (!fs.existsSync(dir)) return none;
+  const sharp = (await import('sharp')).default;
+  const files = fs.readdirSync(dir).sort((a, b) => a.localeCompare(b, 'pt-BR', { numeric: true }));
+  const out = path.join(outDir, 'media', 'p', slug);
+  fs.mkdirSync(out, { recursive: true });
+
+  const photos = files.filter((f) => /\.(jpe?g|png|webp)$/i.test(f) && !/^logo\./i.test(f)).slice(0, 6);
+  const fotos: string[] = [];
+  for (const [i, f] of photos.entries()) {
+    for (const [w, q] of [
+      [1800, 80],
+      [1300, 79],
+      [900, 78],
+    ])
+      await sharp(path.join(dir, f))
+        .rotate()
+        .resize({ width: w, withoutEnlargement: true })
+        .webp({ quality: q, smartSubsample: true })
+        .toFile(path.join(out, `${i + 1}-${w}.webp`));
+    fotos.push(`p/${slug}/${i + 1}`);
+  }
+
+  let logo = '';
+  let logoFile = '';
+  const lf = files.find((f) => /^logo\.(png|jpe?g|webp|svg)$/i.test(f));
+  if (lf) {
+    logoFile = path.join(dir, lf);
+    if (/\.svg$/i.test(lf)) {
+      fs.copyFileSync(logoFile, path.join(out, 'logo.svg'));
+      logo = `media/p/${slug}/logo.svg`;
+    } else {
+      await sharp(logoFile).resize(256, 256, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(path.join(out, 'logo.png'));
+      logo = `media/p/${slug}/logo.png`;
+    }
+  }
+  return { fotos, logo, logoFile, cover: photos[0] ? path.join(dir, photos[0]) : '' };
+}
+
+/**
  * Depois do build, cada prospect vira uma página própria (dist/<slug>.html) com o
  * nome dele no título, na bolacha e no site inteiro (window.__PROSPECT) e uma
  * imagem de prévia (dist/og/<slug>.jpg). É essa imagem que aparece no WhatsApp
@@ -124,9 +183,11 @@ function prospects(): Plugin {
       const list: Record<string, unknown>[] = Array.isArray(cfg.prospects) ? cfg.prospects : [];
       const made: string[] = [];
       for (const raw of list) {
-        const p = cleanProspect(raw);
-        const slug = slugify(String(raw.slug || p.bar));
-        if (!p.bar || !slug || slug === 'index') continue;
+        const slug = slugify(String(raw.slug || raw.bar || ''));
+        if (!slug || slug === 'index') continue;
+        const media = await prospectMedia(slug, outDir);
+        const p = cleanProspect({ ...raw, fotos: media.fotos, logo: media.logo });
+        if (!p.bar) continue;
         const title = `${p.bar} · Prévia do site`;
         const desc = `Prévia do site para ${p.bar}. Role a página e veja o drink ser montado em 3D.`;
         let html = index.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
@@ -143,8 +204,17 @@ function prospects(): Plugin {
         html = html.replace('<head>', `<head>\n    <script>${boot.join(';')}</script>`);
         fs.writeFileSync(path.join(outDir, `${slug}.html`), html);
         const line = p.cidade ? `Coquetelaria para eventos · ${p.cidade}` : 'Coquetelaria para eventos';
-        await ogImage({ name: p.bar, line, photo: OG_PHOTO, out: path.join(outDir, 'og', `${slug}.jpg`) });
-        made.push(`  ${p.bar.padEnd(28)} ${abs(`${slug}.html`)}`);
+        // a prévia do link já mostra a foto, a logo e a cor do próprio prospect, quando existem
+        await ogImage({
+          name: p.bar,
+          line,
+          photo: media.cover || OG_PHOTO,
+          logo: media.logoFile,
+          accent: p.cor ? brandPalette(p.cor).rose2 : undefined,
+          out: path.join(outDir, 'og', `${slug}.jpg`),
+        });
+        const extras = [media.fotos.length && `${media.fotos.length} fotos`, p.logo && 'logo', p.cor && `cor ${p.cor}`].filter(Boolean).join(', ');
+        made.push(`  ${p.bar.padEnd(28)} ${abs(`${slug}.html`)}${extras ? `  (${extras})` : ''}`);
       }
 
       if (made.length) console.log(`\n\x1b[35mprévias\x1b[0m (${made.length})${notify ? ' · com aviso de abertura' : ''}\n${made.join('\n')}`);
@@ -153,7 +223,38 @@ function prospects(): Plugin {
   };
 }
 
+/**
+ * Só no `npm run dev`: o laboratório (/lab.html?poster=desktop) fotografa o primeiro
+ * quadro do hero e manda para cá; vira public/media/poster-<nome>.webp, a foto que
+ * aparece no lugar do 3D enquanto o shader compila (ver Hero.tsx).
+ */
+function posterSaver(): Plugin {
+  return {
+    name: 'poster-saver',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/__poster', (req, res) => {
+        const name = new URL(req.url ?? '', 'http://x').searchParams.get('name') ?? '';
+        if (req.method !== 'POST' || !/^[a-z0-9-]{1,20}$/.test(name)) {
+          res.statusCode = 400;
+          return res.end('nome inválido');
+        }
+        const chunks: Buffer[] = [];
+        req.on('data', (c: Buffer) => chunks.push(c));
+        req.on('end', async () => {
+          const data = Buffer.concat(chunks).toString().replace(/^data:image\/\w+;base64,/, '');
+          const sharp = (await import('sharp')).default;
+          const out = path.resolve('public/media', `poster-${name}.webp`);
+          await sharp(Buffer.from(data, 'base64')).webp({ quality: 74, smartSubsample: true }).toFile(out);
+          console.log(`poster salvo: ${out}`);
+          res.end('ok');
+        });
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: './',
-  plugins: [react(), preloader(), prospects()],
+  plugins: [react(), preloader(), prospects(), posterSaver()],
 });

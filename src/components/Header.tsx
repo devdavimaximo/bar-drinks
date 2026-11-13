@@ -6,6 +6,7 @@ import { brand, contato, nav } from '../content';
 import { onReady, scroller, scrollToId } from '../lib/scroller';
 import { sendOrder } from '../lib/order';
 import Monogram from './Monogram';
+import { prospect } from '../prospect';
 
 /**
  * Cabeçalho fixo. Seções escuras marcam [data-tone="dark"]; o cabeçalho troca
@@ -106,7 +107,7 @@ export default function Header() {
     <>
       <header className={`hud ${dark ? 'is-dark' : ''} ${scrolled ? 'is-scrolled' : ''} ${hidden ? 'is-hidden' : ''} ${open ? 'is-open' : ''}`} ref={root}>
         <button className="hud__brand" onClick={() => go('topo')} aria-label={`${brand.name}, voltar ao início`} data-cursor="início">
-          <Monogram className="hud__mono" />
+          {prospect.logo ? <img className="hud__logo" src={`${import.meta.env.BASE_URL}${prospect.logo}`} alt="" /> : <Monogram className="hud__mono" />}
           <span className="hud__word">{brand.name}</span>
         </button>
 

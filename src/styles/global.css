@@ -428,6 +428,16 @@ section {
   width: 30px;
 }
 
+/* logo do prospect: num disco claro, para logo escura ou colorida funcionar em qualquer fundo */
+.hud__logo {
+  width: 34px;
+  height: 34px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--bone);
+  object-fit: contain;
+}
+
 .hud__word {
   font-family: var(--serif);
   font-size: 19px;
@@ -714,6 +724,18 @@ section {
   display: block;
 }
 
+.hero__poster,
+.hero__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__poster img {
+  object-fit: cover;
+}
+
 .hero__title {
   position: absolute;
   inset: 0;
@@ -835,16 +857,16 @@ section {
   height: 6px;
   border-radius: 50%;
   background: var(--rose-2);
-  box-shadow: 0 0 0 0 rgba(239, 159, 181, 0.6);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--rose-2) 60%, transparent);
   animation: ping 2s infinite;
 }
 
 @keyframes ping {
   70% {
-    box-shadow: 0 0 0 8px rgba(239, 159, 181, 0);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--rose-2) 0%, transparent);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(239, 159, 181, 0);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--rose-2) 0%, transparent);
   }
 }
 
@@ -942,7 +964,7 @@ section {
 
 .ficha__list .is-now i {
   border-color: var(--rose-2);
-  box-shadow: 0 0 0 3px rgba(239, 159, 181, 0.18);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rose-2) 18%, transparent);
 }
 
 .ficha__list .is-done {
@@ -1322,7 +1344,7 @@ section {
   border-color: var(--line-d2);
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(239, 159, 181, 0.18);
+    0 0 0 1px color-mix(in srgb, var(--rose-2) 18%, transparent);
   animation: pipIn 0.6s var(--ease) both;
 }
 
@@ -1524,6 +1546,65 @@ html.menu-open .carta__stage.is-pip {
 }
 
 /* ==========================================================================
+   botão de orçamento do celular (WaFab.tsx)
+   ========================================================================== */
+
+.wa-fab {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .wa-fab {
+    position: fixed;
+    z-index: 65;
+    right: 14px;
+    /* acima do selo "Prévia do site", que fica no rodapé da tela */
+    bottom: calc(42px + env(safe-area-inset-bottom));
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 18px 13px 15px;
+    border-radius: 999px;
+    background: var(--rose-2);
+    color: var(--night);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+    pointer-events: none;
+    transition:
+      opacity 0.45s var(--ease),
+      transform 0.6s var(--ease);
+  }
+
+  .wa-fab svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .wa-fab.is-on {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  html.menu-open .wa-fab {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* o mini player da carta sobe para não encostar no botão */
+  .carta__stage.is-pip {
+    bottom: calc(104px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================================================
    modo apresentação (?pitch=1): notas de venda sobre cada seção
    ========================================================================== */
 
@@ -1628,7 +1709,7 @@ html.pitch-off .pitch-note {
 
 .criador {
   background:
-    radial-gradient(70% 60% at 20% 30%, rgba(239, 159, 181, 0.07), transparent 70%),
+    radial-gradient(70% 60% at 20% 30%, color-mix(in srgb, var(--rose-2) 7%, transparent), transparent 70%),
     var(--night-2);
 }
 
@@ -2453,7 +2534,7 @@ html.pitch-off .pitch-note {
 }
 
 .tone--rose {
-  --t1: rgba(239, 159, 181, 0.35);
+  --t1: color-mix(in srgb, var(--rose-2) 35%, transparent);
   --t2: rgba(214, 184, 127, 0.25);
   --t3: rgba(200, 69, 107, 0.35);
 }
@@ -2472,7 +2553,7 @@ html.pitch-off .pitch-note {
 
 .tone--violet {
   --t1: rgba(190, 150, 220, 0.35);
-  --t2: rgba(239, 159, 181, 0.2);
+  --t2: color-mix(in srgb, var(--rose-2) 20%, transparent);
   --t3: rgba(100, 50, 130, 0.45);
 }
 

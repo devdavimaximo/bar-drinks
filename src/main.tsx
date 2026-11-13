@@ -6,6 +6,10 @@ import '@fontsource-variable/bodoni-moda/opsz.css';
 import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 import '@fontsource-variable/manrope/wght.css';
 import './styles/global.css';
+import { applyBrandColor, prospect } from './prospect';
+
+// prévia com a cor da marca do prospect: troca o rosa dos destaques antes do primeiro render
+applyBrandColor(prospect.cor);
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);

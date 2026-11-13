@@ -97,7 +97,8 @@ async function makeCard(photo: string, name: string, recipe: string, garnish: st
   }
 
   y -= 6;
-  ctx.fillStyle = '#ef9fb5';
+  // o tom de destaque do site (numa prévia, a cor da marca do prospect)
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--rose-2').trim() || '#ef9fb5';
   ctx.font = `italic 400 40px ${serif}`;
   for (const l of wrap(ctx, recipe, W - X * 2).reverse()) {
     ctx.fillText(l, X, y);

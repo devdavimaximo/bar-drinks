@@ -5,3 +5,6 @@ dist/
 *.log
 .DS_Store
 .vercel
+
+# fotos e logos de prospects: material de terceiros, só para as prévias
+prospects/

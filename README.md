@@ -32,6 +32,16 @@ npm run prospect -- --list
 npm run prospect -- --remove drinks-da-ana
 ```
 
+### Fotos, logo e cor do prospect
+
+Crie a pasta `prospects/<slug>/` (o `npm run prospect` já cria) e coloque até 6 fotos dos eventos dele (`.jpg`, `.png`, `.webp`, na ordem do nome do arquivo) e, se tiver, `logo.png` ou `logo.svg`. A cor da marca vai com `--cor "#1f6feb"`. No build:
+
+- as fotos dele substituem as da galeria (legenda: nome e Instagram) e a primeira vira o fundo da imagem de prévia do WhatsApp;
+- a logo entra no preloader, no topo e na imagem de prévia, num disco claro (funciona com logo escura ou colorida);
+- a cor troca o rosa dos destaques; o site clareia ou escurece o tom sozinho para continuar legível no fundo escuro e no claro.
+
+A pasta `prospects/` fica fora do git: é material de terceiros, use só para a prévia. Para testar só a cor, sem build: `?cor=1f6feb`.
+
 Cada prospect fica em `prospects.json` e o build gera `dist/<slug>.html` e `dist/og/<slug>.jpg` (o cartão com o nome do bar e a foto do drink). Publique a pasta `dist/` inteira. O WhatsApp só mostra a imagem quando `site` está preenchido, porque a imagem precisa de endereço absoluto. O comando também sugere a mensagem para mandar.
 
 ### Aviso quando o prospect abre o link
@@ -59,3 +69,5 @@ Os dados aceitos (nome, cidade, Instagram, WhatsApp) passam por limpeza em `src/
 ## Laboratório
 
 `/lab.html?p=0.5` mostra a montagem num ponto fixo (slider embaixo). `/lab.html?d=clover` mostra um drink da carta pelo `slug`.
+
+`/lab.html?poster=desktop` e `/lab.html?poster=mobile` (no `npm run dev`) regeram `public/media/poster-*.webp`, a foto do primeiro quadro do 3D que aparece enquanto o shader compila. Rode de novo se mudar o drink do hero; para a versão celular, abra a página num iframe ou janela de 390 px.

@@ -52,9 +52,11 @@ function text(font, str, x, y, size, fill, letterSpacing = 0) {
 const fit = (font, str, room, max) => Math.min(max, Math.floor((max * room) / Math.max(width(font, str, max), 1)));
 
 /**
- * @param {{ name: string, line: string, photo: string, out: string, kicker?: string }} o
+ * @param {{ name: string, line: string, photo: string, out: string, kicker?: string, logo?: string, accent?: string }} o
+ *   logo: arquivo da logo do prospect (vai num disco claro no lugar da bolacha)
+ *   accent: cor da linha em itálico (numa prévia, a cor da marca do prospect)
  */
-export async function ogImage({ name, line, photo, out, kicker = 'PRÉVIA DO SITE' }) {
+export async function ogImage({ name, line, photo, out, kicker = 'PRÉVIA DO SITE', logo, accent = '#ef9fb5' }) {
   const PAD = 84;
   const ROOM = 600;
   const size = fit(fonts.regular, name, ROOM, 104);
@@ -85,26 +87,36 @@ export async function ogImage({ name, line, photo, out, kicker = 'PRÉVIA DO SIT
     </defs>
     <rect width="${W}" height="${H}" fill="url(#fade)"/>
     <rect width="${W}" height="${H}" fill="url(#glow)"/>
-    <g transform="translate(${PAD} ${PAD - 8}) scale(0.9)" fill="none" stroke="#d6b87f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    ${
+      logo
+        ? `<circle cx="${PAD + 29}" cy="${PAD + 21}" r="34" fill="#efe7da"/>`
+        : `<g transform="translate(${PAD} ${PAD - 8}) scale(0.9)" fill="none" stroke="#d6b87f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="32" cy="32" r="30"/>
       <path d="M18 21h28c0 7-6.3 12.5-14 12.5S18 28 18 21z M32 33.5V46 M24.5 46h15"/>
-    </g>
+    </g>`
+    }
     ${text(fonts.medium, kicker, PAD, top - nameSize * 0.95, 17, '#d6b87f', 0.28)}
     ${lines.map((l, i) => text(fonts.regular, l, PAD - 3, top + i * lead, nameSize, '#efe7da')).join('')}
-    ${text(fonts.italic, line, PAD, top + blockH - lead + nameSize * 0.62, 34, '#ef9fb5')}
+    ${text(fonts.italic, line, PAD, top + blockH - lead + nameSize * 0.62, 34, accent)}
     <rect x="${PAD}" y="${H - PAD - 1}" width="40" height="1" fill="#d6b87f"/>
     ${text(fonts.italic, 'Toque para abrir · o drink é montado em 3D', PAD + 56, H - PAD + 6, 20, 'rgba(239,231,218,0.72)')}
   </svg>`;
 
-  // a foto ocupa a metade direita, enquadrada na taça
-  const pic = await sharp(photo).resize(640, null).extract({ left: 0, top: 150, width: 640, height: H }).toBuffer();
+  // a foto ocupa a metade direita; recorte pela região com mais detalhe, porque
+  // a foto pode ser a do drink da demonstração ou uma qualquer do prospect
+  const pic = await sharp(photo).rotate().resize(640, H, { fit: 'cover', position: sharp.strategy.attention }).toBuffer();
+  const layers = [
+    { input: pic, left: W - 640, top: 0 },
+    { input: Buffer.from(svg), left: 0, top: 0 },
+  ];
+  if (logo) {
+    const mark = await sharp(logo).resize(48, 48, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+    layers.push({ input: mark, left: PAD + 29 - 24, top: PAD + 21 - 24 });
+  }
 
   fs.mkdirSync(path.dirname(out), { recursive: true });
   await sharp({ create: { width: W, height: H, channels: 3, background: '#0b110f' } })
-    .composite([
-      { input: pic, left: W - 640, top: 0 },
-      { input: Buffer.from(svg), left: 0, top: 0 },
-    ])
+    .composite(layers)
     .jpeg({ quality: 84, mozjpeg: true })
     .toFile(out);
 }

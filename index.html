@@ -11,6 +11,9 @@
     <meta property="og:title" content="Seu Bar · Demonstração de site" />
     <meta property="og:description" content="O bar é onde a festa acontece." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <!-- a foto do hero (primeiro quadro do 3D) chega junto com o preloader -->
+    <link rel="preload" as="image" href="./media/poster-desktop.webp" media="(min-width: 900px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="./media/poster-mobile.webp" media="(max-width: 899px)" fetchpriority="high" />
     <!--
       Preloader: HTML + CSS inline, pinta no primeiro quadro, antes de qualquer JS.
       A entrada é CSS puro; Preloader.tsx só adiciona .is-out quando o drink compilou.
@@ -41,6 +44,8 @@
       .preloader__center { position: relative; display: grid; justify-items: center; gap: 24px; }
       .preloader__mark { position: relative; width: 92px; color: var(--brass-2); }
       .preloader__mono { position: relative; width: 92px; display: block; aspect-ratio: 1; }
+      /* logo do prospect (prévia personalizada) no lugar da bolacha */
+      .preloader__logo { display: block; width: 92px; height: 92px; padding: 12px; border-radius: 50%; background: var(--bone); object-fit: contain; opacity: 0; animation: pl-sub 1s ease 0.2s forwards; }
       .preloader .mono__ring { stroke-dasharray: 188.5; stroke-dashoffset: 188.5; animation: pl-ring 1.2s var(--p2io) 0.1s forwards; }
       /* a bebida da taça do monograma: um triângulo rosa que enche de baixo para cima */
       .preloader__fill {

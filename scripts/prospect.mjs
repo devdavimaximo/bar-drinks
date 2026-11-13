@@ -2,7 +2,8 @@
  * Adiciona, lista ou remove prospects em prospects.json. O build gera a página e a
  * imagem de prévia de cada um (plugin `prospects` em vite.config.ts).
  *
- *   npm run prospect -- --bar "Drinks da Ana" --cidade Curitiba --ig drinksdaana --wa 5541999999999
+ *   npm run prospect -- --bar "Drinks da Ana" --cidade Curitiba --ig drinksdaana --wa 5541999999999 --cor "#1f6feb"
+ *     fotos e logo: coloque em prospects/<slug>/ (até 6 fotos + logo.png ou logo.svg)
  *   npm run prospect -- --site https://demo.seudominio.com.br     (uma vez: onde o dist é publicado)
  *   npm run prospect -- --notify https://ntfy.sh/topico-secreto   (aviso quando o prospect abre)
  *   npm run prospect -- --list
@@ -73,10 +74,17 @@ if (bar) {
     process.exit(1);
   }
   const old = cfg.prospects.find((p) => p.slug === slug);
-  const entry = { slug, bar, cidade: opt('cidade') ?? old?.cidade ?? '', ig: opt('ig') ?? old?.ig ?? '', wa: opt('wa') ?? old?.wa ?? '' };
+  const keep = (k) => opt(k) ?? old?.[k] ?? '';
+  const entry = { slug, bar, cidade: keep('cidade'), ig: keep('ig'), wa: keep('wa'), cor: keep('cor') };
+  // fotos e logo do prospect: a pasta já fica pronta para receber os arquivos
+  const dir = `prospects/${slug}`;
+  fs.mkdirSync(dir, { recursive: true });
   cfg.prospects = [...cfg.prospects.filter((p) => p.slug !== slug), entry];
   save();
   console.log(`${old ? 'atualizado' : 'adicionado'}: ${bar} → ${url(slug)}`);
+  const n = fs.readdirSync(dir).filter((f) => /\.(jpe?g|png|webp)$/i.test(f) && !/^logo\./i.test(f)).length;
+  const hasLogo = fs.readdirSync(dir).some((f) => /^logo\./i.test(f));
+  console.log(`fotos e logo em ${dir}/: ${n ? `${n} foto(s)` : 'nenhuma foto ainda (usa as da demonstração)'}${hasLogo ? ', com logo' : ', sem logo'}`);
   console.log('\nMensagem sugerida para mandar no WhatsApp:\n');
   console.log(`  Oi! Montei uma prévia de como poderia ficar o site de vocês, já com o nome ${bar}: ${url(slug)}`);
   console.log('  Abre no celular e rola a página: o drink é montado na tela. O orçamento e o WhatsApp já funcionam.\n');

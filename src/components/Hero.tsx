@@ -2,7 +2,7 @@ import { lazy, Suspense, useRef, useState, type CSSProperties } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
-import { brand, build, drinkCount, hero, signature } from '../content';
+import { brand, build, hero, signature } from '../content';
 import { LITE, REDUCED } from '../lib/env';
 import { onReady, scrollToId, signals } from '../lib/scroller';
 
@@ -118,6 +118,12 @@ export default function Hero() {
 
   return (
     <section className="hero" id="topo" ref={root} data-tone="dark" aria-label={`${brand.name}, ${brand.descriptor.toLowerCase()}`}>
+      {/* o primeiro quadro do 3D em foto (gerado pelo lab, ?poster=): cobre a espera
+          quando o shader demora mais que o preloader; o canvas aparece por cima */}
+      <picture className="hero__poster" aria-hidden="true">
+        <source media="(max-width: 899px)" srcSet={`${import.meta.env.BASE_URL}media/poster-mobile.webp`} />
+        <img src={`${import.meta.env.BASE_URL}media/poster-desktop.webp`} alt="" fetchPriority="high" decoding="async" />
+      </picture>
       <Suspense fallback={<div className="hero__gl" />}>
         <Drink mode={{ kind: 'hero' }} className="hero__gl" />
       </Suspense>
@@ -208,7 +214,8 @@ export default function Hero() {
       </article>
 
       <p className="hero__outro">
-        <em>E mais</em> {drinkCount - 1} drinks na carta.
+        {/* logo abaixo vem a galeria: o fim do hero puxa para as fotos */}
+        <em>{hero.outro[0]}</em> {hero.outro[1]}
       </p>
 
       <div className="hero__chapter" aria-hidden="true">

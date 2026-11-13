@@ -1,10 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { galeria } from '../content';
+import { brand, galeria } from '../content';
+import { prospect } from '../prospect';
 import { LITE, REDUCED } from '../lib/env';
 import { useNear, useReveal } from '../lib/reveal';
 import Img from './Img';
 import Monogram from './Monogram';
+
+/**
+ * Numa prévia com fotos do prospect (prospects/<slug>/, ver vite.config.ts) a galeria
+ * mostra os eventos dele; as legendas viram o nome e o Instagram, porque não sabemos
+ * o que cada foto mostra. Sem fotos, ficam as de demonstração.
+ */
+const PHOTOS = prospect.fotos.length
+  ? prospect.fotos.map((src, i) => ({ src, caption: brand.name, meta: prospect.ig ? brand.instagram : 'evento atendido', tone: galeria.photos[i % galeria.photos.length].tone }))
+  : galeria.photos;
 
 /**
  * Fotos dos eventos e o que os anfitriões disseram. Enquanto o cliente não manda
@@ -53,8 +63,8 @@ export default function Galeria() {
       </h2>
 
       <div className="shots">
-        {galeria.photos.map((p, i) => (
-          <figure key={p.caption} className={`shot shot--${i + 1} tone--${p.tone}`} data-veil={(i % 3) * 0.1}>
+        {PHOTOS.map((p, i) => (
+          <figure key={`${p.src}-${i}`} className={`shot shot--${i + 1} tone--${p.tone}`} data-veil={(i % 3) * 0.1}>
             {p.src ? (
               <Img src={p.src} alt={`${p.caption}, ${p.meta}`} sizes="(max-width: 899px) 90vw, 33vw" />
             ) : (
@@ -71,7 +81,7 @@ export default function Galeria() {
           </figure>
         ))}
       </div>
-      <p className="shots__note">{galeria.note}</p>
+      {!prospect.fotos.length && <p className="shots__note">{galeria.note}</p>}
 
       <div className="quotes" data-rise>
         <p className="quotes__mark" aria-hidden="true">

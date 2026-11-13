@@ -17,6 +17,7 @@ import Hero from './components/Hero';
 import Manifesto from './components/Manifesto';
 import Servicos from './components/Servicos';
 import Pitch from './components/Pitch';
+import WaFab from './components/WaFab';
 import Carta from './components/Carta';
 import Eventos from './components/Eventos';
 import Criador from './components/Criador';
@@ -110,6 +111,7 @@ export default function App() {
         <Faq />
       </main>
       <Contato />
+      <WaFab />
       {PITCH && <Pitch />}
     </>
   );
