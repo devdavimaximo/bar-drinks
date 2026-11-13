@@ -30,8 +30,9 @@
   --rose-ink: #b23459;
   --ruby: #8e1636;
 
-  --serif: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
-  --sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  /* fontes servidas pelo próprio site (@fontsource, ver main.tsx): sem ida ao Google bloqueando a tela */
+  --serif: 'Bodoni Moda Variable', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
+  --sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
 
   --pad: clamp(16px, 3.4vw, 56px);
   --hud-h: 76px;
@@ -156,9 +157,7 @@ main {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--bone-2);
-  background: rgba(11, 17, 15, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(11, 17, 15, 0.86);
   padding: 5px 12px;
   border-radius: 999px;
   pointer-events: none;
@@ -365,76 +364,7 @@ section {
   font-style: normal;
 }
 
-/* ---------- preloader: a bolacha e a cortina ---------- */
-
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  color: var(--bone);
-}
-
-.preloader__curtain {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(60% 50% at 50% 55%, #16211d, var(--night) 70%),
-    var(--night);
-  box-shadow: inset 0 -1px 0 rgba(214, 184, 127, 0.3);
-}
-
-.preloader__center {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 24px;
-}
-
-.preloader__mark {
-  position: relative;
-  width: 92px;
-  color: var(--brass-2);
-}
-
-.preloader__mono {
-  position: relative;
-  width: 92px;
-  display: block;
-}
-
-/* a bebida da taça do monograma: um triângulo rosa que enche de baixo para cima */
-.preloader__fill {
-  position: absolute;
-  left: 32%;
-  right: 32%;
-  top: 34.5%;
-  height: 17%;
-  background: var(--rose-2);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: 50% 100%;
-  opacity: 0.85;
-}
-
-.preloader__word {
-  font-family: var(--serif);
-  font-size: 15px;
-  letter-spacing: 0.5em;
-  margin-right: -0.5em;
-}
-
-.preloader__char {
-  display: inline-block;
-}
-
-.preloader__sub {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 17px;
-  color: var(--bone-2);
-  margin-top: -12px;
-}
+/* preloader: o CSS fica inline no index.html, para pintar antes do JS */
 
 /* ---------- cabeçalho ---------- */
 
@@ -884,9 +814,7 @@ section {
   padding: 9px 16px;
   border: 1px solid var(--line-d);
   border-radius: 999px;
-  background: rgba(11, 17, 15, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(11, 17, 15, 0.62);
   white-space: nowrap;
 }
 
@@ -926,9 +854,8 @@ section {
   padding: 22px 22px 18px;
   border: 1px solid var(--line-d);
   border-radius: 18px;
-  background: rgba(11, 17, 15, 0.5);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* sem backdrop-filter: em cima do canvas o desfoque seria refeito a cada quadro do 3D */
+  background: linear-gradient(160deg, rgba(20, 30, 26, 0.86), rgba(11, 17, 15, 0.8));
   visibility: hidden;
 }
 
@@ -1442,9 +1369,7 @@ section {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(11, 17, 15, 0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(11, 17, 15, 0.78);
 }
 
 html.menu-open .carta__stage.is-pip {
@@ -2473,9 +2398,7 @@ html.menu-open .carta__stage.is-pip {
     width: auto;
     padding: 18px;
     border-radius: 16px;
-    background: rgba(11, 17, 15, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(11, 17, 15, 0.8);
   }
 
   .hero__name {

@@ -12,5 +12,6 @@
     "noUnusedLocals": true,
     "types": ["vite/client"]
   },
-  "include": ["src"]
+  // o TS 7 não acha arquivos por glob dentro do OneDrive: as entradas puxam o resto pelos imports
+  "files": ["src/main.tsx", "src/dev/lab.tsx"]
 }

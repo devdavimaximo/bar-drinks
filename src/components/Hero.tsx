@@ -6,7 +6,7 @@ import { brand, build, drinkCount, hero, signature } from '../content';
 import { LITE, REDUCED } from '../lib/env';
 import { onReady, scrollToId, signals } from '../lib/scroller';
 
-// three.js fica fora do bundle inicial: o preloader aparece na hora e espera este chunk
+// o shader fica num chunk à parte, baixado em paralelo; o preloader espera ele compilar
 const Drink = lazy(() => import('../gl/Drink'));
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];

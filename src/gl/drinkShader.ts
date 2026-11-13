@@ -16,12 +16,17 @@
  * Laços começam em ZERO (uniform) para o compilador D3D não desenrolar tudo.
  */
 
-export const vertex = /* glsl */ `
-  void main() { gl_Position = vec4(position.xy, 0.0, 1.0); }
+/** um triângulo que cobre a tela inteira, sem buffer: os cantos saem do gl_VertexID */
+export const vertex = /* glsl */ `#version 300 es
+  void main() {
+    vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+  }
 `;
 
-export const fragment = (lite: boolean) => /* glsl */ `
+export const fragment = (lite: boolean) => /* glsl */ `#version 300 es
   precision highp float;
+  out vec4 fragColor;
 
   #define STEPS ${lite ? 72 : 110}
   #define IN_STEPS ${lite ? 14 : 22}
@@ -693,6 +698,6 @@ export const fragment = (lite: boolean) => /* glsl */ `
     // vinheta
     col *= 1.0 - uVig * dot(uv * vec2(0.7, 1.0), uv * vec2(0.7, 1.0));
     col += (hash(vec3(gl_FragCoord.xy, uTime)) - 0.5) / 255.0;
-    gl_FragColor = vec4(col, 1.0);
+    fragColor = vec4(col, 1.0);
   }
 `;

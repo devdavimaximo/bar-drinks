@@ -27,6 +27,9 @@ function GlassField({ drinks }: { drinks: number }) {
   const cv = useRef<HTMLCanvasElement>(null);
   const target = useRef(drinks);
   target.current = drinks;
+  const kick = useRef<() => void>(() => {});
+  // número novo: acorda o desenho (parado, o canvas não gasta nada)
+  useEffect(() => kick.current(), [drinks]);
 
   useEffect(() => {
     const c = cv.current!;
@@ -53,9 +56,12 @@ function GlassField({ drinks }: { drinks: number }) {
       const cols = w < 420 ? 18 : 26;
       const cell = w / cols;
       const n = Math.round(target.current / 10);
+      let settled = true;
       for (let i = 0; i < MAXD; i++) {
         const want = i < n ? 1 : 0;
         scale[i] = REDUCED ? want : damp(scale[i], want, 9 - Math.min(6, Math.abs(i - n) * 0.06), dt);
+        if (Math.abs(scale[i] - want) > 0.002) settled = false;
+        else scale[i] = want;
         const s = scale[i];
         const x = (i % cols) * cell + cell / 2;
         const y = Math.floor(i / cols) * cell + cell / 2;
@@ -83,21 +89,29 @@ function GlassField({ drinks }: { drinks: number }) {
         ctx.strokeRect(x - r * 0.25, y - r * 0.05, r * 0.42, r * 0.42);
         ctx.globalAlpha = 1;
       }
-      if (visible) raf = requestAnimationFrame(draw);
+      raf = visible && !settled ? requestAnimationFrame(draw) : 0;
+    };
+    kick.current = () => {
+      if (!visible || raf) return;
+      last = performance.now();
+      raf = requestAnimationFrame(draw);
     };
 
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
       cancelAnimationFrame(raf);
-      if (visible) {
-        last = performance.now();
-        raf = requestAnimationFrame(draw);
-      }
+      raf = 0;
+      kick.current();
     });
     io.observe(c);
+    // mudar o tamanho apaga o canvas: um quadro redesenha (e para de novo se nada mexe)
+    const ro = new ResizeObserver(() => kick.current());
+    ro.observe(c);
     return () => {
       io.disconnect();
+      ro.disconnect();
       cancelAnimationFrame(raf);
+      kick.current = () => {};
     };
   }, []);
 
