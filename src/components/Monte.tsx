@@ -4,6 +4,7 @@ import { brand, monte } from '../content';
 import { brl, clamp, damp, REDUCED } from '../lib/env';
 import { useReveal } from '../lib/reveal';
 import { sendOrder } from '../lib/order';
+import { useSignature } from '../lib/signature';
 
 const fmt = (n: number) => n.toLocaleString('pt-BR');
 
@@ -144,6 +145,9 @@ export default function Monte() {
   const [pkg, setPkg] = useState(monte.packages.find((p) => p.featured)!.id);
   const [extras, setExtras] = useState<string[]>([]);
   const [date, setDate] = useState('');
+  const [who, setWho] = useState('');
+  const [place, setPlace] = useState('');
+  const sig = useSignature();
   useReveal(root);
 
   const r = estimate(guests, hours, pkg, extras);
@@ -151,21 +155,26 @@ export default function Monte() {
   const flip = (id: string) => setExtras((xs) => (xs.includes(id) ? xs.filter((x) => x !== id) : [...xs, id]));
 
   const when = date ? new Date(`${date}T12:00:00`).toLocaleDateString('pt-BR') : 'a definir';
+  // o pedido chega organizado: o atendimento já sabe data, local e tamanho antes de responder
   const message = [
-    `Olá, ${brand.name}! Montei o bar no site:`,
+    `Olá, ${brand.name}! ${who.trim() ? `Aqui é ${who.trim()}. ` : ''}Montei o bar no site:`,
     `• ${kind}, ${guests} convidados, ${hours} horas`,
     `• Pacote ${r.pkg.name} (${r.pkg.drinks} drinks na carta)`,
     ...monte.extras.filter((e) => extras.includes(e.id)).map((e) => `• ${e.name}`),
+    ...(sig ? [`• Drink assinatura: ${sig.name} (${sig.recipe})`] : []),
     `• Estimativa do site: ${brl(r.total)}`,
     `Data: ${when}`,
-    'Local do evento: ',
-  ].join('\n');
+    `Local do evento: ${place.trim() || 'a definir'}`,
+    date ? 'Essa data está disponível?' : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   return (
     <section className="monte" id="monte" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">IV</span> {monte.label}
+          <span className="eyebrow__n">V</span> {monte.label}
         </p>
         <p className="eyebrow">Calculadora</p>
       </div>
@@ -263,6 +272,21 @@ export default function Monte() {
             </label>
             <input id="data" className="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </div>
+
+          <div className="ctrl ctrl--pair" data-rise>
+            <div>
+              <label className="ctrl__label" htmlFor="quem">
+                Seu nome
+              </label>
+              <input id="quem" className="date" value={who} maxLength={40} autoComplete="name" placeholder="Como podemos te chamar" onChange={(e) => setWho(e.target.value)} />
+            </div>
+            <div>
+              <label className="ctrl__label" htmlFor="local">
+                Cidade ou local
+              </label>
+              <input id="local" className="date" value={place} maxLength={60} placeholder="Ex.: Espaço Jardim, Curitiba" onChange={(e) => setPlace(e.target.value)} />
+            </div>
+          </div>
         </div>
 
         {/* painel escuro dentro de seção clara: tom pela classe, não por data-tone (o cabeçalho não deve virar) */}
@@ -303,8 +327,14 @@ export default function Monte() {
             </div>
           </dl>
 
+          {sig && (
+            <p className="monte__sig">
+              <span>Drink assinatura</span> {sig.name}
+            </p>
+          )}
+
           <button className="btn btn--rose btn--lg" onClick={() => sendOrder(message)} data-cursor="enviar">
-            Enviar para o WhatsApp
+            {date ? 'Verificar a data no WhatsApp' : 'Enviar para o WhatsApp'}
           </button>
           <p className="monte__caveat">{monte.caveat}</p>
         </div>

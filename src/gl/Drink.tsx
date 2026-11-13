@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type MutableRefObject } from 'react';
 import type { Look } from '../content';
 import { LITE, REDUCED, damp, easeInOut } from '../lib/env';
 import { onReady, signals } from '../lib/scroller';
@@ -37,7 +37,10 @@ const announceReady = () => {
   window.dispatchEvent(new Event('drink:ready'));
 };
 
-export default function Drink({ mode, className }: { mode: Mode; className?: string }) {
+/** tira uma foto do drink na tela (JPEG em data URL), com pelo menos `minWidth` px de largura */
+export type Snapshot = (minWidth: number) => string | null;
+
+export default function Drink({ mode, className, snap }: { mode: Mode; className?: string; snap?: MutableRefObject<Snapshot | null> }) {
   const host = useRef<HTMLDivElement>(null);
   const kind = mode.kind;
   const look = mode.kind === 'card' ? mode.look : null;
@@ -188,6 +191,22 @@ export default function Drink({ mode, className }: { mode: Mode; className?: str
       });
     };
 
+    // foto para o cartão compartilhável: redesenha maior, lê na mesma tarefa
+    // (sem preserveDrawingBuffer o buffer só vale até o navegador compor a tela)
+    if (snap)
+      snap.current = (minWidth) => {
+        if (!r?.usable || !canvas) return null;
+        const w = canvas.width;
+        const h = canvas.height;
+        const k = Math.max(1, minWidth / w);
+        r.setSize(w * k, h * k);
+        r.draw();
+        const url = canvas.toDataURL('image/jpeg', 0.92);
+        r.setSize(w, h);
+        r.draw();
+        return url;
+      };
+
     const ro = new ResizeObserver(() => {
       resize();
       wakeRef.current();
@@ -239,6 +258,7 @@ export default function Drink({ mode, className }: { mode: Mode; className?: str
       canvas?.remove();
       r = null;
       wakeRef.current = () => {};
+      if (snap) snap.current = null;
     };
   }, [kind]);
 

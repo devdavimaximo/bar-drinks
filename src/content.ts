@@ -2,24 +2,32 @@
    Todo o texto e todos os dados do site. Versão demonstrativa, sem marca:
    nomes, valores, depoimentos e fotos são ilustrativos (marcados com DEMO) e
    devem ser trocados pelos do cliente. O site inteiro lê daqui, inclusive o 3D.
+   Numa prévia personalizada (src/prospect.ts), o nome, o Instagram, o WhatsApp
+   e a cidade vêm do link do prospect.
    ========================================================================== */
+
+import { personalized, prospect } from './prospect';
 
 export const brand = {
   /** DEMO: nome genérico de propósito; troque pelo nome do cliente */
-  name: 'Seu Bar',
+  name: prospect.bar || 'Seu Bar',
   descriptor: 'Coquetelaria para eventos',
-  region: 'Drinks autorais para eventos',
-  instagram: '@seubar',
-  instagramUrl: 'https://www.instagram.com/',
+  region: prospect.cidade ? `Drinks autorais · ${prospect.cidade}` : 'Drinks autorais para eventos',
+  instagram: prospect.ig ? `@${prospect.ig}` : '@seubar',
+  instagramUrl: `https://www.instagram.com/${prospect.ig}`,
   /** DEMO: sem número; troque pelo WhatsApp do cliente (DDI + DDD + número) */
-  whatsapp: '',
+  whatsapp: prospect.wa,
   whatsappDisplay: 'Fale pelo WhatsApp',
 };
+
+/** o selo fixo no rodapé da tela: deixa claro que é uma proposta, não o site oficial */
+export const demoTag = personalized ? `Prévia do site · ${brand.name}` : 'Demonstração · proposta de site';
 
 export const nav = [
   { id: 'o-bar', label: 'O bar' },
   { id: 'carta', label: 'Carta' },
   { id: 'eventos', label: 'Eventos' },
+  { id: 'criador', label: 'Crie seu drink' },
   { id: 'monte', label: 'Monte seu bar' },
   { id: 'galeria', label: 'Galeria' },
   { id: 'perguntas', label: 'Perguntas' },
@@ -276,6 +284,42 @@ export const eventos = {
       tags: ['Bar compacto', 'Em casa ou no salão', 'Carta enxuta'],
     },
   ],
+};
+
+/* ---------- drink assinatura (criador) ----------
+   O convidado monta o drink do evento: cada escolha vira um `Look` e o mesmo
+   shader da carta mostra o resultado na hora. Ver componente Criador.tsx. */
+
+export type Garnish = { id: string; name: string; group: 'wheel' | 'sprig' | 'berry' };
+
+export const criador = {
+  label: 'Drink assinatura',
+  title: ['Crie o drink', 'do seu evento.'],
+  body: 'Escolha a base, o sabor e a guarnição, e dê um nome. O drink aparece aqui do jeito que vai chegar aos convidados, e a receita segue junto com o pedido.',
+  namePlaceholder: 'Ana & Pedro',
+  fallbackName: 'O drink de vocês',
+  bases: ['Gin', 'Vodka', 'Rum', 'Cachaça', 'Sem álcool'],
+  flavors: [
+    { id: 'hibisco', name: 'Hibisco', color: '#f27e9d', bottom: '#9c1238', berry: '#c3304f' },
+    { id: 'vermelhas', name: 'Frutas vermelhas', color: '#e8476a', bottom: '#86102c', berry: '#a3122f' },
+    { id: 'maracuja', name: 'Maracujá', color: '#f4d35a', bottom: '#d9a61c', berry: '#1e140b', cloud: 0.4 },
+    { id: 'amora', name: 'Amora & lavanda', color: '#a565c2', bottom: '#4b155f', berry: '#2a0d30' },
+    { id: 'pepino', name: 'Pepino & manjericão', color: '#d9efb4', berry: '#3e6a2c' },
+    { id: 'limao', name: 'Limão & hortelã', color: '#e4f2d0', berry: '#4f7d22', cloud: 0.2 },
+  ],
+  styles: [
+    { id: 'long', name: 'Long drink', text: 'taça balão, gelo e água tônica' },
+    { id: 'batido', name: 'Batido', text: 'na coupe, com espuma de seda' },
+  ],
+  garnishes: [
+    { id: 'siciliano', name: 'Limão-siciliano', group: 'wheel' },
+    { id: 'taiti', name: 'Limão-taiti', group: 'wheel' },
+    { id: 'alecrim', name: 'Alecrim', group: 'sprig' },
+    { id: 'hortela', name: 'Hortelã', group: 'sprig' },
+    { id: 'frutinhas', name: 'Frutinhas', group: 'berry' },
+  ] as Garnish[],
+  /** o que o cartão compartilhável diz no rodapé */
+  cardFooter: 'criado no site',
 };
 
 /* ---------- monte seu bar (calculadora) ----------

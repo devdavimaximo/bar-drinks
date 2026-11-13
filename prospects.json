@@ -1,0 +1,13 @@
+{
+  "_leia": "Cada prospect vira dist/<slug>.html + dist/og/<slug>.jpg no build. Adicione com: npm run prospect -- --bar \"Nome do Bar\" --cidade \"Cidade\". 'site' é o endereço onde o dist fica publicado (ex.: https://demo.seudominio.com.br): sem ele, o WhatsApp não mostra a imagem de prévia.",
+  "site": "",
+  "prospects": [
+    {
+      "slug": "drinks-da-ana",
+      "bar": "Drinks da Ana",
+      "cidade": "Curitiba",
+      "ig": "",
+      "wa": ""
+    }
+  ]
+}

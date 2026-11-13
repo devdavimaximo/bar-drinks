@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState, type CSSProperties } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
@@ -10,8 +10,28 @@ import { onReady, scrollToId, signals } from '../lib/scroller';
 const Drink = lazy(() => import('../gl/Drink'));
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-/** o nome em duas linhas, uma de cada lado da taça */
-const WORDS = [brand.name.split(' ')[0], brand.name.split(' ').slice(1).join(' ')];
+/**
+ * O nome em duas partes, uma de cada lado da taça. Numa prévia o nome é do
+ * prospect ("Drinks da Ana", "Bartenders Club Eventos"): corta onde as duas
+ * metades ficam mais parecidas e encolhe a fonte quando a metade maior não cabe.
+ */
+function splitName(name: string): [string, string] {
+  const w = name.split(' ');
+  if (w.length < 2) return [name, ''];
+  let best: [string, string] = [w[0], w.slice(1).join(' ')];
+  for (let i = 1; i < w.length; i++) {
+    const a = w.slice(0, i).join(' ');
+    const b = w.slice(i).join(' ');
+    if (Math.max(a.length, b.length) < Math.max(best[0].length, best[1].length)) best = [a, b];
+  }
+  return best;
+}
+const WORDS = splitName(brand.name);
+/** "Seu"/"Bar" (3 letras) é o tamanho de referência; ~4 letras cabem de cada lado no desktop, ~6 no total no celular (com folga entre as duas) */
+const FIT = {
+  '--fit': Math.min(1, 4.2 / Math.max(WORDS[0].length, WORDS[1].length)).toFixed(3),
+  '--fit-m': Math.min(1, 6.4 / (WORDS[0].length + WORDS[1].length + 1)).toFixed(3),
+} as CSSProperties;
 const stepAt = (p: number) => build.steps.reduce((i, s, k) => (p >= s.at ? k : i), 0);
 
 export default function Hero() {
@@ -102,7 +122,7 @@ export default function Hero() {
         <Drink mode={{ kind: 'hero' }} className="hero__gl" />
       </Suspense>
 
-      <h1 className="hero__title" aria-label={`${brand.name}, ${brand.descriptor}`}>
+      <h1 className="hero__title" style={FIT} aria-label={`${brand.name}, ${brand.descriptor}`}>
         <span className="hero__word hero__word--a" aria-hidden="true">
           {WORDS[0]}
         </span>

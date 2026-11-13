@@ -724,7 +724,8 @@ section {
   pointer-events: none;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(90px, 15.5vw, 290px);
+  /* --fit encolhe nomes longos de prospect (Hero.tsx) */
+  font-size: calc(clamp(90px, 15.5vw, 290px) * var(--fit, 1));
   line-height: 1;
   letter-spacing: -0.04em;
 }
@@ -732,6 +733,8 @@ section {
 .hero__word {
   display: block;
   padding-bottom: 0.06em;
+  /* as letras são inline-block (SplitText): sem isso um nome longo quebra no meio da palavra */
+  white-space: nowrap;
 }
 
 .hero__word--b {
@@ -1422,6 +1425,250 @@ html.menu-open .carta__stage.is-pip {
 }
 
 /* ==========================================================================
+   drink assinatura (criador): o convidado monta o drink do evento
+   ========================================================================== */
+
+.criador {
+  background:
+    radial-gradient(70% 60% at 20% 30%, rgba(239, 159, 181, 0.07), transparent 70%),
+    var(--night-2);
+}
+
+.criador__grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  gap: clamp(32px, 6vw, 110px);
+  align-items: start;
+}
+
+.criador__slot {
+  position: sticky;
+  top: calc(var(--hud-h) + 16px);
+  aspect-ratio: 4 / 5;
+  max-height: calc(100vh - var(--hud-h) - 40px);
+  width: 100%;
+}
+
+.criador__stage {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--line-d);
+  background: #070b0a;
+}
+
+.criador__gl {
+  position: absolute;
+  inset: 0;
+}
+
+.criador__cap {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 22px;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  pointer-events: none;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+.criador__name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 3.4vw, 56px);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.criador__name.is-empty {
+  color: var(--bone-2);
+}
+
+.criador__recipe {
+  max-width: 28em;
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--rose-2);
+}
+
+.criador__body {
+  margin-top: 28px;
+  max-width: 30em;
+  color: var(--bone-2);
+}
+
+.mix {
+  margin-top: 30px;
+}
+
+.mix__label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone-3);
+}
+
+.mix__name {
+  width: 100%;
+  padding: 10px 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line-d2);
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: clamp(26px, 2.4vw, 36px);
+  border-radius: 0;
+  transition: border-color 0.4s var(--ease);
+}
+
+.mix__name::placeholder {
+  color: var(--bone-3);
+  font-style: italic;
+}
+
+.mix__name:focus {
+  outline: none;
+  border-bottom-color: var(--rose-2);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips--wide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid var(--line-d2);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--bone-2);
+  transition: all 0.35s var(--ease);
+}
+
+.chip:hover {
+  color: var(--bone);
+  border-color: var(--bone-2);
+}
+
+.chip.is-on {
+  background: var(--bone);
+  border-color: var(--bone);
+  color: var(--night);
+}
+
+.chip--swatch i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.chip--card {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 16px;
+}
+
+.chip--card b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.chip--card small {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.criador__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.criador__actions .btn--line {
+  color: var(--bone);
+}
+
+.criador__actions .btn[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+@media (max-width: 899px) {
+  .criador__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* a taça fica presa no topo enquanto as escolhas passam por baixo */
+  .criador__slot {
+    top: calc(var(--hud-h) + 8px);
+    z-index: 2;
+    aspect-ratio: auto;
+    height: 44vh;
+    max-height: none;
+  }
+
+  /* fundo atrás da taça presa: as opções passam por baixo sem aparecer em volta */
+  .criador__slot::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: calc(-1 * (var(--hud-h) + 8px)) calc(-1 * var(--pad)) -18px;
+    background: linear-gradient(to bottom, var(--night-2) 92%, rgba(17, 26, 23, 0));
+  }
+
+  .criador__cap {
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+    gap: 4px;
+  }
+
+  .criador__cap .eyebrow {
+    display: none;
+  }
+
+  .criador__name {
+    font-size: 30px;
+  }
+
+  .criador__recipe {
+    font-size: 14px;
+  }
+
+  .chips--wide {
+    grid-template-columns: 1fr;
+  }
+
+  .criador__actions .btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
    IV · eventos
    ========================================================================== */
 
@@ -1800,6 +2047,44 @@ html.menu-open .carta__stage.is-pip {
   padding: 12px 16px;
   width: 100%;
   max-width: 280px;
+}
+
+.date::placeholder {
+  color: var(--ink-3);
+}
+
+.ctrl--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ctrl--pair .date {
+  max-width: none;
+}
+
+/* o drink criado no Criador aparece no resumo e vai junto no pedido */
+.monte__sig {
+  margin: 4px 0 18px;
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--bone);
+}
+
+.monte__sig span {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose-2);
+}
+
+@media (max-width: 560px) {
+  .ctrl--pair {
+    grid-template-columns: 1fr;
+  }
 }
 
 .monte__out {
@@ -2323,7 +2608,7 @@ html.menu-open .carta__stage.is-pip {
   .hero__title {
     align-items: flex-start;
     padding-top: calc(var(--hud-h) + 4vh);
-    font-size: 27vw;
+    font-size: calc(27vw * var(--fit-m, 1));
   }
 
   .hero__meta {

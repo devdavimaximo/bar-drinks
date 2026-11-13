@@ -29,7 +29,7 @@ export default function Contato() {
 
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">VII</span> {contato.label}
+          <span className="eyebrow__n">VIII</span> {contato.label}
         </p>
         <p className="eyebrow">{brand.region}</p>
       </div>

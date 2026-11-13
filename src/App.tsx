@@ -5,6 +5,8 @@ import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import Lenis from 'lenis';
 import { REDUCED } from './lib/env';
+import { brand, demoTag } from './content';
+import { personalized } from './prospect';
 import { onReady, scroller, signals } from './lib/scroller';
 import Preloader from './components/Preloader';
 import Header from './components/Header';
@@ -14,6 +16,7 @@ import Hero from './components/Hero';
 import Manifesto from './components/Manifesto';
 import Carta from './components/Carta';
 import Eventos from './components/Eventos';
+import Criador from './components/Criador';
 import Monte from './components/Monte';
 import Galeria from './components/Galeria';
 import Faq from './components/Faq';
@@ -24,6 +27,10 @@ gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 export default function App() {
+  useEffect(() => {
+    if (personalized) document.title = `${brand.name} · Prévia do site`;
+  }, []);
+
   useEffect(() => {
     document.documentElement.classList.add('is-loading');
     const lenis = REDUCED ? null : new Lenis({ lerp: 0.09, wheelMultiplier: 0.95 });
@@ -72,12 +79,13 @@ export default function App() {
       <Toast />
       <div className="grain" aria-hidden="true" />
       {/* modelo de apresentação: não é o site oficial da casa */}
-      <p className="demo-tag">Demonstração · proposta de site</p>
+      <p className="demo-tag">{demoTag}</p>
       <main>
         <Hero />
         <Manifesto />
         <Carta />
         <Eventos />
+        <Criador />
         <Monte />
         <Galeria />
         <Faq />
