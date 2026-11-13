@@ -22,7 +22,7 @@ export default function Servicos() {
     <section className="servicos" id="servicos" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">II</span> {servicos.label}
+          <span className="eyebrow__n">III</span> {servicos.label}
         </p>
         <p className="eyebrow">Para montar o seu bar</p>
       </div>

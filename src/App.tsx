@@ -38,10 +38,11 @@ export default function App() {
   useEffect(
     () =>
       startTracking([
+        // na ordem da página: galeria e o bar vêm antes de serviços
         { id: 'topo', label: 'o início' },
-        ...nav.slice(0, 1),
+        ...nav.slice(0, 2),
         { id: 'servicos', label: 'Serviços' },
-        ...nav.slice(1),
+        ...nav.slice(2),
         { id: 'contato', label: 'Contato' },
       ]),
     [],
@@ -98,13 +99,14 @@ export default function App() {
       <p className="demo-tag">{demoTag}</p>
       <main>
         <Hero />
+        {/* as fotos reais logo depois da animação: é a prova do serviço */}
+        <Galeria />
         <Manifesto />
         <Servicos />
         <Carta />
         <Eventos />
         <Criador />
         <Monte />
-        <Galeria />
         <Faq />
       </main>
       <Contato />

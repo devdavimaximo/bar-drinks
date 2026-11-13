@@ -201,7 +201,7 @@ export default function Criador() {
     <section className="criador" id="criador" ref={root} data-tone="dark">
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">V</span> {criador.label}
+          <span className="eyebrow__n">VI</span> {criador.label}
         </p>
         <p className="eyebrow">Simulação 3D · monte e compartilhe</p>
       </div>

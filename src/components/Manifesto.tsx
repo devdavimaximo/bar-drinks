@@ -67,7 +67,7 @@ export default function Manifesto() {
     <section className="casa" id="o-bar" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">I</span> {manifesto.label}
+          <span className="eyebrow__n">II</span> {manifesto.label}
         </p>
         <p className="eyebrow">{brand.region}</p>
       </div>

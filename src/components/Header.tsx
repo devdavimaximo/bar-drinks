@@ -43,7 +43,12 @@ export default function Header() {
         refreshPriority: -10,
         onToggle: (s) => s.isActive && setDark(true),
         onLeave: () => setDark(false),
-        onLeaveBack: () => setDark(false),
+        // voltando para cima: o tom de quem vem antes (a galeria vem logo depois do
+        // hero, que é escuro e está dentro do pin-spacer do GSAP)
+        onLeaveBack: () => {
+          const prev = el.previousElementSibling;
+          setDark(!!prev && (prev.matches('[data-tone="dark"]') || !!prev.querySelector(':scope > [data-tone="dark"]')));
+        },
       }),
     );
 
@@ -58,9 +63,10 @@ export default function Header() {
       }),
     );
 
-    // véu atrás do cabeçalho só depois do hero (no hero, o bar é a própria cena)
+    // véu atrás do cabeçalho só depois do hero (no hero, o bar é a própria cena);
+    // a galeria é a primeira seção depois dele
     ScrollTrigger.create({
-      trigger: '#o-bar',
+      trigger: '#galeria',
       start: 'top 80px',
       end: 'max',
       refreshPriority: -10,

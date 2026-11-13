@@ -43,7 +43,7 @@ export default function Galeria() {
     <section className="galeria" id="galeria" ref={root} data-tone="dark">
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">VII</span> {galeria.label}
+          <span className="eyebrow__n">I</span> {galeria.label}
         </p>
         <p className="eyebrow">Momentos</p>
       </div>

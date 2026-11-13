@@ -11,10 +11,11 @@ npm run build      # gera dist/ e as prévias de cada prospect
 ## O que tem
 
 - **Hero**: um Gin, Hibisco & Tônica em 3D (raymarching num quad de tela, `src/gl/drinkShader.ts`, desenhado por um renderizador WebGL2 próprio em `src/gl/renderer.ts`) montado pelo scroll em seis tempos: taça, gelo, gin, hibisco, tônica e guarnição. A ficha ao lado mostra a receita, os ml no copo e a temperatura.
+- **Galeria e depoimentos** logo depois do hero: as fotos reais dos eventos são a prova do serviço, então vêm antes de qualquer explicação.
 - **Serviços**: o que o bar vende além da carta (bar de gin, welcome drink, flair...). Os serviços ligados a um extra da calculadora mostram o valor. Edite `servicos` em `content.ts`.
 - **Carta**: o mesmo shader com cada drink da carta. A taça muda de forma (balão ↔ coupe), de cor e de guarnição. Para mudar a carta, edite `carta` em `content.ts`; o `look` de cada drink define taça, cor, gelo, espuma, rodela, raminho e frutinhas.
 - **Drink assinatura** (`Criador.tsx`): o convidado escolhe base, sabor, estilo e guarnição, dá um nome ("Ana & Pedro") e vê o drink em 3D na hora. Pode pedir pelo WhatsApp ou salvar um cartão 1080×1350 para compartilhar (no celular abre o compartilhar do sistema). O drink criado entra no pedido da calculadora. Opções em `criador`, no `content.ts`.
-- **Eventos**, **Monte seu bar** (calculadora: bartenders, drinks, gelo, investimento, nome, local e data → WhatsApp), **Galeria e depoimentos**, **FAQ**, **Contato**.
+- **Eventos**, **Monte seu bar** (calculadora: bartenders, drinks, gelo, investimento, nome, local e data → WhatsApp), **FAQ**, **Contato**.
 
 ## Prévia personalizada para prospecção
 

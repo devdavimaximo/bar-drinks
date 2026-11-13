@@ -24,12 +24,12 @@ export const brand = {
 export const demoTag = personalized ? `Prévia do site · ${brand.name}` : 'Demonstração · proposta de site';
 
 export const nav = [
+  { id: 'galeria', label: 'Galeria' },
   { id: 'o-bar', label: 'O bar' },
   { id: 'carta', label: 'Carta' },
   { id: 'eventos', label: 'Eventos' },
   { id: 'criador', label: 'Crie seu drink' },
   { id: 'monte', label: 'Monte seu bar' },
-  { id: 'galeria', label: 'Galeria' },
   { id: 'perguntas', label: 'Perguntas' },
 ];
 
@@ -270,7 +270,7 @@ export const pitch: Record<string, [string, string]> = {
   eventos: ['Fala com cada público', 'Casamento, 15 anos, corporativo: o cliente se enxerga no tipo de festa dele.'],
   criador: ['Marketing que se espalha', 'Os noivos criam o drink com o nome deles e compartilham a imagem, com o nome do bar no rodapé.'],
   monte: ['Orçamento qualificado', 'O pedido chega pronto no WhatsApp: data, local, convidados, pacote e valor estimado. Menos conversa, mais contrato.'],
-  galeria: ['Prova social', 'Fotos dos eventos e depoimentos de quem já contratou.'],
+  galeria: ['Prova real logo de cara', 'Logo depois da animação vêm as fotos dos eventos e os depoimentos: o cliente vê que o bar existe e entrega.'],
   perguntas: ['Menos tempo no atendimento', 'As dúvidas de sempre respondidas antes de chegar no WhatsApp.'],
   contato: ['Tudo termina numa conversa', 'Cada botão do site leva para o WhatsApp do bar, com a mensagem já escrita.'],
 };

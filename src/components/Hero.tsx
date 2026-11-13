@@ -155,7 +155,7 @@ export default function Hero() {
         <p className="eyebrow" data-intro>
           {brand.region}
         </p>
-        <button className="hero__go" data-intro data-cursor="servir" onClick={() => scrollToId('o-bar', 7)}>
+        <button className="hero__go" data-intro data-cursor="servir" onClick={() => scrollToId('galeria', 7)}>
           <span>{hero.hint}</span>
           <i aria-hidden="true" />
         </button>
