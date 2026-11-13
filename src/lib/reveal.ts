@@ -1,8 +1,36 @@
-import type { RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { useGSAP } from '@gsap/react';
 import { LITE } from './env';
+
+/**
+ * Prepara as animações de uma seção só quando ela chega perto da tela (uma tela
+ * de antecedência). Montar tudo de uma vez no carregamento (SplitText mede cada
+ * linha, cada ScrollTrigger mede a página) travava o celular por ~1 s logo depois
+ * da abertura. `setup` roda dentro de um gsap.context: desmontar desfaz tudo.
+ */
+export function useNear(scope: RefObject<HTMLElement | null>, setup: (el: HTMLElement) => void, margin = '100% 0px') {
+  const fn = useRef(setup);
+  fn.current = setup;
+  useEffect(() => {
+    const el = scope.current;
+    if (!el) return;
+    let ctx: gsap.Context | null = null;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        ctx = gsap.context(() => fn.current(el), el);
+      },
+      { rootMargin: margin },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      ctx?.revert();
+    };
+  }, [scope, margin]);
+}
 
 /**
  * [data-split] → linhas sobem por trás de uma máscara
@@ -11,7 +39,8 @@ import { LITE } from './env';
  * [data-veil]  → imagem se revela de baixo para cima, com leve zoom de saída
  */
 export function useReveal(scope: RefObject<HTMLElement | null>) {
-  useGSAP(
+  useNear(
+    scope,
     () => {
       const q = gsap.utils.selector(scope);
 
@@ -79,6 +108,5 @@ export function useReveal(scope: RefObject<HTMLElement | null>) {
           );
       });
     },
-    { scope },
   );
 }

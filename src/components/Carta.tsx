@@ -60,7 +60,7 @@ export default function Carta() {
     <section className="carta" id="carta" ref={root} data-tone="dark">
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">II</span> {cartaCopy.label}
+          <span className="eyebrow__n">III</span> {cartaCopy.label}
         </p>
         <p className="eyebrow">{cartaCopy.demo}</p>
       </div>

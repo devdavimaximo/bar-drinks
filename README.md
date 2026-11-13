@@ -11,6 +11,7 @@ npm run build      # gera dist/ e as prévias de cada prospect
 ## O que tem
 
 - **Hero**: um Gin, Hibisco & Tônica em 3D (raymarching num quad de tela, `src/gl/drinkShader.ts`, desenhado por um renderizador WebGL2 próprio em `src/gl/renderer.ts`) montado pelo scroll em seis tempos: taça, gelo, gin, hibisco, tônica e guarnição. A ficha ao lado mostra a receita, os ml no copo e a temperatura.
+- **Serviços**: o que o bar vende além da carta (bar de gin, welcome drink, flair...). Os serviços ligados a um extra da calculadora mostram o valor. Edite `servicos` em `content.ts`.
 - **Carta**: o mesmo shader com cada drink da carta. A taça muda de forma (balão ↔ coupe), de cor e de guarnição. Para mudar a carta, edite `carta` em `content.ts`; o `look` de cada drink define taça, cor, gelo, espuma, rodela, raminho e frutinhas.
 - **Drink assinatura** (`Criador.tsx`): o convidado escolhe base, sabor, estilo e guarnição, dá um nome ("Ana & Pedro") e vê o drink em 3D na hora. Pode pedir pelo WhatsApp ou salvar um cartão 1080×1350 para compartilhar (no celular abre o compartilhar do sistema). O drink criado entra no pedido da calculadora. Opções em `criador`, no `content.ts`.
 - **Eventos**, **Monte seu bar** (calculadora: bartenders, drinks, gelo, investimento, nome, local e data → WhatsApp), **Galeria e depoimentos**, **FAQ**, **Contato**.
@@ -31,6 +32,20 @@ npm run prospect -- --remove drinks-da-ana
 ```
 
 Cada prospect fica em `prospects.json` e o build gera `dist/<slug>.html` e `dist/og/<slug>.jpg` (o cartão com o nome do bar e a foto do drink). Publique a pasta `dist/` inteira. O WhatsApp só mostra a imagem quando `site` está preenchido, porque a imagem precisa de endereço absoluto. O comando também sugere a mensagem para mandar.
+
+### Aviso quando o prospect abre o link
+
+```bash
+npm run prospect -- --notify https://ntfy.sh/um-nome-dificil-de-adivinhar --build
+```
+
+Instale o app **ntfy** no celular e assine o mesmo tópico. Você recebe: quando o prospect abre a prévia (celular ou computador), quando chega no drink assinatura e na calculadora, quando clica no WhatsApp, quando gera o cartão do drink e quanto tempo ficou. Funciona com qualquer endereço https que aceite POST com texto (Google Apps Script, webhook próprio). Só eventos: nada sobre quem visita. Tópicos do ntfy.sh são públicos para quem souber o nome, então use um nome difícil de adivinhar.
+
+Para não se notificar ao testar, abra a prévia uma vez com `?eu=1` no seu aparelho (`?eu=0` desfaz). O modo apresentação nunca notifica.
+
+### Modo apresentação
+
+Acrescente `?pitch=1` ao link (ex.: `drinks-da-ana.html?pitch=1`) para mostrar o site numa reunião: cada seção ganha uma nota “por que isso vende”. As notas ficam em `pitch`, no `content.ts`, e há um botão para ocultá-las.
 
 Os dados aceitos (nome, cidade, Instagram, WhatsApp) passam por limpeza em `src/prospect.ts` e vão para a tela só como texto.
 

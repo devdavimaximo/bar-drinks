@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import { galeria } from '../content';
 import { LITE, REDUCED } from '../lib/env';
-import { useReveal } from '../lib/reveal';
+import { useNear, useReveal } from '../lib/reveal';
 import Img from './Img';
 import Monogram from './Monogram';
 
@@ -17,7 +16,8 @@ export default function Galeria() {
   useReveal(root);
 
   // as molduras andam em velocidades diferentes: profundidade sem 3D
-  useGSAP(
+  useNear(
+    root,
     () => {
       if (LITE) return;
       gsap.utils.toArray<HTMLElement>('.shot', root.current).forEach((el, i) =>
@@ -28,7 +28,6 @@ export default function Galeria() {
         }),
       );
     },
-    { scope: root },
   );
 
   // os depoimentos se revezam sozinhos
@@ -44,7 +43,7 @@ export default function Galeria() {
     <section className="galeria" id="galeria" ref={root} data-tone="dark">
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">VI</span> {galeria.label}
+          <span className="eyebrow__n">VII</span> {galeria.label}
         </p>
         <p className="eyebrow">Momentos</p>
       </div>

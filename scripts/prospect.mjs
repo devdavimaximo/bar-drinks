@@ -4,6 +4,7 @@
  *
  *   npm run prospect -- --bar "Drinks da Ana" --cidade Curitiba --ig drinksdaana --wa 5541999999999
  *   npm run prospect -- --site https://demo.seudominio.com.br     (uma vez: onde o dist é publicado)
+ *   npm run prospect -- --notify https://ntfy.sh/topico-secreto   (aviso quando o prospect abre)
  *   npm run prospect -- --list
  *   npm run prospect -- --remove drinks-da-ana
  *
@@ -37,6 +38,18 @@ if (opt('site') !== undefined) {
   cfg.site = opt('site');
   save();
   console.log(`site: ${cfg.site}`);
+}
+
+// aviso de abertura: um endereço que recebe POST com texto (ex.: https://ntfy.sh/um-nome-dificil-de-adivinhar)
+if (opt('notify') !== undefined) {
+  const n = opt('notify');
+  if (n && !/^https:\/\//.test(n)) {
+    console.error('--notify precisa começar com https://');
+    process.exit(1);
+  }
+  cfg.notify = n;
+  save();
+  console.log(n ? `aviso de abertura: ${n}\n  (no app ntfy, assine o mesmo tópico; abra a prévia uma vez com ?eu=1 no seu celular para não se notificar)` : 'aviso de abertura desligado');
 }
 
 if (flag('list')) {

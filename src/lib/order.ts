@@ -1,4 +1,5 @@
 import { brand } from '../content';
+import { onWhatsApp } from './track';
 
 /** todas as conversas e pedidos acontecem no WhatsApp de atendimento */
 const number = brand.whatsapp.replace(/\D/g, '');
@@ -13,5 +14,6 @@ export const showToast = (text: string) => toast(text);
 
 /** abre o WhatsApp de atendimento com o pedido já escrito */
 export function sendOrder(message: string) {
+  onWhatsApp();
   window.open(whatsappHref(message), '_blank', 'noopener');
 }

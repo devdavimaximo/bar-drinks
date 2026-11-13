@@ -20,7 +20,7 @@ export default function Eventos() {
     <section className="eventos" id="eventos" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">III</span> {eventos.label}
+          <span className="eyebrow__n">IV</span> {eventos.label}
         </p>
         <p className="eyebrow">Formatos</p>
       </div>

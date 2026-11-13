@@ -1,8 +1,7 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import { brand, contato } from '../content';
-import { useReveal } from '../lib/reveal';
+import { useNear, useReveal } from '../lib/reveal';
 import { sendOrder, whatsappHref } from '../lib/order';
 import { scrollToId } from '../lib/scroller';
 import Monogram from './Monogram';
@@ -12,7 +11,8 @@ export default function Contato() {
   useReveal(root);
 
   // a marca gigante sobe devagar por trás do texto
-  useGSAP(
+  useNear(
+    root,
     () => {
       gsap.fromTo(
         '.contato__mono',
@@ -20,7 +20,6 @@ export default function Contato() {
         { yPercent: -6, rotate: 0, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom bottom', scrub: true } },
       );
     },
-    { scope: root },
   );
 
   return (
@@ -29,7 +28,7 @@ export default function Contato() {
 
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">VIII</span> {contato.label}
+          <span className="eyebrow__n">IX</span> {contato.label}
         </p>
         <p className="eyebrow">{brand.region}</p>
       </div>

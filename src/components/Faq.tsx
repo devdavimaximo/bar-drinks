@@ -18,7 +18,7 @@ export default function Faq() {
     <section className="faq" id="perguntas" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">VII</span> Perguntas
+          <span className="eyebrow__n">VIII</span> Perguntas
         </p>
         <p className="eyebrow">Antes de reservar</p>
       </div>

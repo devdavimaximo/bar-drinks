@@ -5,7 +5,8 @@ import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import Lenis from 'lenis';
 import { REDUCED } from './lib/env';
-import { brand, demoTag } from './content';
+import { brand, demoTag, nav } from './content';
+import { PITCH, startTracking } from './lib/track';
 import { personalized } from './prospect';
 import { onReady, scroller, signals } from './lib/scroller';
 import Preloader from './components/Preloader';
@@ -14,6 +15,8 @@ import Cursor from './components/Cursor';
 import Toast from './components/Toast';
 import Hero from './components/Hero';
 import Manifesto from './components/Manifesto';
+import Servicos from './components/Servicos';
+import Pitch from './components/Pitch';
 import Carta from './components/Carta';
 import Eventos from './components/Eventos';
 import Criador from './components/Criador';
@@ -30,6 +33,19 @@ export default function App() {
   useEffect(() => {
     if (personalized) document.title = `${brand.name} · Prévia do site`;
   }, []);
+
+  // aviso de abertura da prévia (só nas páginas de prospect com `notify`; ver lib/track.ts)
+  useEffect(
+    () =>
+      startTracking([
+        { id: 'topo', label: 'o início' },
+        ...nav.slice(0, 1),
+        { id: 'servicos', label: 'Serviços' },
+        ...nav.slice(1),
+        { id: 'contato', label: 'Contato' },
+      ]),
+    [],
+  );
 
   useEffect(() => {
     document.documentElement.classList.add('is-loading');
@@ -83,6 +99,7 @@ export default function App() {
       <main>
         <Hero />
         <Manifesto />
+        <Servicos />
         <Carta />
         <Eventos />
         <Criador />
@@ -91,6 +108,7 @@ export default function App() {
         <Faq />
       </main>
       <Contato />
+      {PITCH && <Pitch />}
     </>
   );
 }

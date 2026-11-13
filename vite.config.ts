@@ -111,6 +111,7 @@ function prospects(): Plugin {
       const cfg = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
       const site: string = cfg.site ? String(cfg.site).replace(/\/?$/, '/') : '';
       const abs = (p: string) => (site ? new URL(p, site).href : `./${p}`);
+      const notify: string = /^https:\/\/[^\s"'<>]+$/.test(String(cfg.notify ?? '')) ? cfg.notify : '';
       const indexPath = path.join(outDir, 'index.html');
       let index = fs.readFileSync(indexPath, 'utf8');
 
@@ -135,14 +136,18 @@ function prospects(): Plugin {
         html = setMeta(html, 'property', 'og:image', abs(`og/${slug}.jpg`));
         if (site) html = setMeta(html, 'property', 'og:url', abs(`${slug}.html`));
         // antes de tudo: o script da bolacha e o app leem daqui (JSON com < escapado)
-        html = html.replace('<head>', `<head>\n    <script>window.__PROSPECT=${JSON.stringify(p).replace(/</g, '\\u003c')}</script>`);
+        const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
+        const boot = [`window.__PROSPECT=${json(p)}`];
+        // aviso de abertura (src/lib/track.ts): só https
+        if (notify) boot.push(`window.__TRACK=${json({ url: notify, slug })}`);
+        html = html.replace('<head>', `<head>\n    <script>${boot.join(';')}</script>`);
         fs.writeFileSync(path.join(outDir, `${slug}.html`), html);
         const line = p.cidade ? `Coquetelaria para eventos · ${p.cidade}` : 'Coquetelaria para eventos';
         await ogImage({ name: p.bar, line, photo: OG_PHOTO, out: path.join(outDir, 'og', `${slug}.jpg`) });
         made.push(`  ${p.bar.padEnd(28)} ${abs(`${slug}.html`)}`);
       }
 
-      if (made.length) console.log(`\n\x1b[35mprévias\x1b[0m (${made.length})\n${made.join('\n')}`);
+      if (made.length) console.log(`\n\x1b[35mprévias\x1b[0m (${made.length})${notify ? ' · com aviso de abertura' : ''}\n${made.join('\n')}`);
       if (!site) console.log('\x1b[33m  sem "site" em prospects.json: a imagem de prévia não aparece no WhatsApp até preencher\x1b[0m');
     },
   };

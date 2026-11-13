@@ -238,6 +238,43 @@ export const manifesto = {
   ],
 };
 
+/* ---------- serviços: o que o bar vende além da carta ----------
+   DEMO: troque pelos serviços do cliente. `extra` liga o serviço ao extra de mesmo
+   id na calculadora (monte.extras), para o card mostrar o valor. */
+
+export const servicos = {
+  label: 'Serviços',
+  title: ['Tudo o que o bar', 'leva para a festa.'],
+  body: 'A carta é só o começo. Monte o bar do seu evento com os serviços que fazem os convidados lembrarem da noite.',
+  items: [
+    { k: 'Bar de drinks autorais', v: 'Carta criada para o evento, servida da recepção ao último brinde.' },
+    { k: 'Drink assinatura', v: 'Um drink com o nome do casal, da debutante ou da empresa.', extra: 'assinatura' },
+    { k: 'Bar de gin', v: 'Taça balão, tônicas especiais e especiarias para montar na hora.' },
+    { k: 'Welcome drink', v: 'Coupes servidas na chegada, enquanto os convidados se encontram.' },
+    { k: 'Carta sem álcool', v: 'Mocktails tão bonitos quanto os clássicos, para todas as idades.', extra: 'semalcool' },
+    { k: 'Show de flair', v: 'Malabarismo com garrafas e coqueteleira: meia hora de espetáculo.', extra: 'flair' },
+    { k: 'Taças de cristal', v: 'Cristal no lugar do vidro comum, para as fotos e para o brinde.', extra: 'cristal' },
+    { k: 'Estrutura completa', v: 'Balcão, gelo cristalino, copos, insumos e equipe uniformizada.' },
+  ],
+};
+
+/* ---------- modo apresentação (?pitch=1) ----------
+   Notas de venda sobre cada seção, para mostrar o site numa reunião com o dono
+   do bar. Chave = id da seção. Não aparecem para mais ninguém. */
+
+export const pitch: Record<string, [string, string]> = {
+  topo: ['Primeira impressão', 'Em três segundos o cliente vê um drink sendo montado em 3D, com o nome do bar. Nada de site genérico de modelo pronto.'],
+  'o-bar': ['Confiança', 'Diferenciais e números logo no início: por que contratar este bar e não o concorrente que só tem Instagram.'],
+  servicos: ['Ticket maior', 'Cada serviço é um motivo a mais para fechar e um extra que entra no orçamento.'],
+  carta: ['A carta vira vitrine', 'Cada drink aparece como chega ao convidado. “Quero na minha festa” já abre o WhatsApp com o pedido.'],
+  eventos: ['Fala com cada público', 'Casamento, 15 anos, corporativo: o cliente se enxerga no tipo de festa dele.'],
+  criador: ['Marketing que se espalha', 'Os noivos criam o drink com o nome deles e compartilham a imagem, com o nome do bar no rodapé.'],
+  monte: ['Orçamento qualificado', 'O pedido chega pronto no WhatsApp: data, local, convidados, pacote e valor estimado. Menos conversa, mais contrato.'],
+  galeria: ['Prova social', 'Fotos dos eventos e depoimentos de quem já contratou.'],
+  perguntas: ['Menos tempo no atendimento', 'As dúvidas de sempre respondidas antes de chegar no WhatsApp.'],
+  contato: ['Tudo termina numa conversa', 'Cada botão do site leva para o WhatsApp do bar, com a mensagem já escrita.'],
+};
+
 export const cartaCopy = {
   label: 'Carta',
   title: ['Escolha', 'pela cor.'],

@@ -1,9 +1,8 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import { brand, manifesto } from '../content';
 import { REDUCED } from '../lib/env';
-import { useReveal } from '../lib/reveal';
+import { useNear, useReveal } from '../lib/reveal';
 
 /** as ferramentas do balcão em traço único: coqueteleira, dosador e colher bailarina */
 function Tools() {
@@ -34,7 +33,8 @@ export default function Manifesto() {
   const root = useRef<HTMLElement>(null);
   useReveal(root);
 
-  useGSAP(
+  useNear(
+    root,
     () => {
       const q = gsap.utils.selector(root);
       // o traço se desenha ao rolar, como caneta sobre o papel do cardápio
@@ -61,7 +61,6 @@ export default function Manifesto() {
         });
       });
     },
-    { scope: root },
   );
 
   return (

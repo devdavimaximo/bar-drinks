@@ -1425,6 +1425,204 @@ html.menu-open .carta__stage.is-pip {
 }
 
 /* ==========================================================================
+   serviços: o que o bar vende além da carta
+   ========================================================================== */
+
+.servicos {
+  background: var(--paper-2);
+}
+
+.servicos__head {
+  display: grid;
+  grid-template-columns: 7fr 4fr;
+  gap: clamp(24px, 5vw, 90px);
+  align-items: end;
+}
+
+.servicos__body {
+  max-width: 26em;
+  color: var(--ink-2);
+}
+
+.svc {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: clamp(48px, 8vh, 90px);
+  border-top: 1px solid var(--line-2);
+  border-left: 1px solid var(--line-2);
+}
+
+.svc__item {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px 26px 32px;
+  border-right: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+  transition: background 0.5s var(--ease);
+}
+
+.svc__item:hover {
+  background: var(--paper);
+}
+
+.svc__item small {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.svc__item h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.1;
+}
+
+.svc__item p {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.svc__price {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose-ink);
+}
+
+.servicos__cta {
+  margin-top: 44px;
+}
+
+@media (max-width: 1100px) {
+  .svc {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 899px) {
+  .servicos__head {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .svc__item {
+    padding: 22px 18px 24px;
+  }
+
+  .servicos__cta {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .svc {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   modo apresentação (?pitch=1): notas de venda sobre cada seção
+   ========================================================================== */
+
+.pitch-note {
+  position: absolute;
+  z-index: 60;
+  /* abaixo do cabeçalho quando a seção encosta no topo da tela */
+  top: calc(var(--hud-h) + 12px);
+  right: var(--pad);
+  width: min(330px, calc(100vw - 2 * var(--pad)));
+  padding: 16px 18px 18px;
+  border: 1px dashed var(--brass-2);
+  border-radius: 14px;
+  background: rgba(11, 17, 15, 0.92);
+  color: var(--bone);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  animation: stepIn 0.8s var(--ease) both;
+}
+
+.pitch-note b {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass-2);
+}
+
+.pitch-note strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.pitch-note p {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--bone-2);
+}
+
+.pitch-host {
+  position: relative;
+}
+
+.pitch-bar {
+  position: fixed;
+  z-index: 95;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 999px;
+  background: var(--brass-2);
+  color: var(--night);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pitch-bar button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--bone);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+html.pitch-off .pitch-note {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .pitch-note {
+    top: calc(var(--hud-h) + 8px);
+    left: var(--pad);
+    right: var(--pad);
+    width: auto;
+    padding: 12px 14px 14px;
+  }
+
+  .pitch-note strong {
+    font-size: 18px;
+  }
+
+  .pitch-note p {
+    font-size: 12.5px;
+  }
+}
+
+/* ==========================================================================
    drink assinatura (criador): o convidado monta o drink do evento
    ========================================================================== */
 

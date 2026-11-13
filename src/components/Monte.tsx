@@ -174,7 +174,7 @@ export default function Monte() {
     <section className="monte" id="monte" ref={root}>
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">V</span> {monte.label}
+          <span className="eyebrow__n">VI</span> {monte.label}
         </p>
         <p className="eyebrow">Calculadora</p>
       </div>

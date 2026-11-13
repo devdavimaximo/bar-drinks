@@ -3,6 +3,7 @@ import { brand, criador, type Look } from '../content';
 import { useReveal } from '../lib/reveal';
 import { sendOrder, showToast } from '../lib/order';
 import { setSignature } from '../lib/signature';
+import { onShare } from '../lib/track';
 import type { Snapshot } from '../gl/Drink';
 
 const Drink = lazy(() => import('../gl/Drink'));
@@ -176,6 +177,7 @@ export default function Criador() {
       await document.fonts?.ready;
       const blob = await makeCard(photo, title, recipe, garnishText);
       if (!blob) throw new Error('sem imagem');
+      onShare();
       const file = new File([blob], `drink-${title.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}.jpg`, { type: 'image/jpeg' });
       // no celular abre o compartilhar do sistema (WhatsApp, Instagram); no desktop, baixa
       if (navigator.canShare?.({ files: [file] })) {
@@ -199,7 +201,7 @@ export default function Criador() {
     <section className="criador" id="criador" ref={root} data-tone="dark">
       <div className="sec-head">
         <p className="eyebrow">
-          <span className="eyebrow__n">IV</span> {criador.label}
+          <span className="eyebrow__n">V</span> {criador.label}
         </p>
         <p className="eyebrow">Simulação 3D · monte e compartilhe</p>
       </div>
