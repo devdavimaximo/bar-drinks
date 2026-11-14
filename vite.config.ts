@@ -174,9 +174,24 @@ function prospects(): Plugin {
       const indexPath = path.join(outDir, 'index.html');
       let index = fs.readFileSync(indexPath, 'utf8');
 
+      // imagens (sharp) nunca derrubam o build: sem elas o site e as páginas saem do mesmo jeito
+      const warned = new Set<string>();
+      const safe = async <T,>(label: string, fn: () => Promise<T>): Promise<T | undefined> => {
+        try {
+          return await fn();
+        } catch (e) {
+          const msg = (e as Error).message.split('\n')[0];
+          if (!warned.has(msg)) console.warn(`\x1b[33m  ${label} não gerada: ${msg}\x1b[0m`);
+          warned.add(msg);
+          return undefined;
+        }
+      };
+
       // a página principal também ganha imagem de prévia
-      await ogImage({ name: brand.name, line: brand.descriptor, photo: OG_PHOTO, out: path.join(outDir, 'og', 'site.jpg'), kicker: 'DEMONSTRAÇÃO DE SITE' });
-      index = setMeta(index, 'property', 'og:image', abs('og/site.jpg'));
+      const siteOg = await safe('imagem de prévia', () =>
+        ogImage({ name: brand.name, line: brand.descriptor, photo: OG_PHOTO, out: path.join(outDir, 'og', 'site.jpg'), kicker: 'DEMONSTRAÇÃO DE SITE' }).then(() => true),
+      );
+      if (siteOg) index = setMeta(index, 'property', 'og:image', abs('og/site.jpg'));
       index = setMeta(index, 'name', 'twitter:card', 'summary_large_image');
       fs.writeFileSync(indexPath, index);
 
@@ -185,7 +200,7 @@ function prospects(): Plugin {
       for (const raw of list) {
         const slug = slugify(String(raw.slug || raw.bar || ''));
         if (!slug || slug === 'index') continue;
-        const media = await prospectMedia(slug, outDir);
+        const media = (await safe('fotos/logo do prospect', () => prospectMedia(slug, outDir))) ?? { fotos: [], logo: '', logoFile: '', cover: '' };
         const p = cleanProspect({ ...raw, fotos: media.fotos, logo: media.logo });
         if (!p.bar) continue;
         const title = `${p.bar} · Prévia do site`;
@@ -194,7 +209,7 @@ function prospects(): Plugin {
         html = setMeta(html, 'name', 'description', desc);
         html = setMeta(html, 'property', 'og:title', title);
         html = setMeta(html, 'property', 'og:description', desc);
-        html = setMeta(html, 'property', 'og:image', abs(`og/${slug}.jpg`));
+        if (siteOg) html = setMeta(html, 'property', 'og:image', abs(`og/${slug}.jpg`));
         if (site) html = setMeta(html, 'property', 'og:url', abs(`${slug}.html`));
         // antes de tudo: o script da bolacha e o app leem daqui (JSON com < escapado)
         const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
@@ -205,14 +220,17 @@ function prospects(): Plugin {
         fs.writeFileSync(path.join(outDir, `${slug}.html`), html);
         const line = p.cidade ? `Coquetelaria para eventos · ${p.cidade}` : 'Coquetelaria para eventos';
         // a prévia do link já mostra a foto, a logo e a cor do próprio prospect, quando existem
-        await ogImage({
-          name: p.bar,
-          line,
-          photo: media.cover || OG_PHOTO,
-          logo: media.logoFile,
-          accent: p.cor ? brandPalette(p.cor).rose2 : undefined,
-          out: path.join(outDir, 'og', `${slug}.jpg`),
-        });
+        if (siteOg)
+          await safe('imagem de prévia', () =>
+            ogImage({
+              name: p.bar,
+              line,
+              photo: media.cover || OG_PHOTO,
+              logo: media.logoFile,
+              accent: p.cor ? brandPalette(p.cor).rose2 : undefined,
+              out: path.join(outDir, 'og', `${slug}.jpg`),
+            }),
+          );
         const extras = [media.fotos.length && `${media.fotos.length} fotos`, p.logo && 'logo', p.cor && `cor ${p.cor}`].filter(Boolean).join(', ');
         made.push(`  ${p.bar.padEnd(28)} ${abs(`${slug}.html`)}${extras ? `  (${extras})` : ''}`);
       }

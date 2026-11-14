@@ -11,20 +11,31 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import opentype from 'opentype.js';
 
 const require = createRequire(import.meta.url);
-const sharp = require('sharp');
 
 const W = 1200;
 const H = 630;
-const FONT_DIR = path.join(path.dirname(require.resolve('@fontsource/bodoni-moda/package.json')), 'files');
-const load = (f) => opentype.parse(fs.readFileSync(path.join(FONT_DIR, f)).buffer);
-const fonts = {
-  regular: load('bodoni-moda-latin-400-normal.woff'),
-  italic: load('bodoni-moda-latin-400-italic.woff'),
-  medium: load('bodoni-moda-latin-500-normal.woff'),
-};
+
+/**
+ * sharp, opentype e as fontes só carregam quando uma imagem é pedida: o vite.config
+ * importa este arquivo, e um sharp que não carrega (ex.: binário ausente no servidor
+ * de build) não pode derrubar o build inteiro. Quem chama trata o erro.
+ */
+let sharp;
+let fonts;
+async function setup() {
+  if (fonts) return;
+  sharp = require('sharp');
+  const opentype = (await import('opentype.js')).default;
+  const dir = path.join(path.dirname(require.resolve('@fontsource/bodoni-moda/package.json')), 'files');
+  const load = (f) => opentype.parse(fs.readFileSync(path.join(dir, f)).buffer);
+  fonts = {
+    regular: load('bodoni-moda-latin-400-normal.woff'),
+    italic: load('bodoni-moda-latin-400-italic.woff'),
+    medium: load('bodoni-moda-latin-500-normal.woff'),
+  };
+}
 const OPT = { kerning: false, features: { liga: false, rlig: false } };
 
 const width = (font, text, size, letterSpacing = 0) => font.getAdvanceWidth(text, size, { ...OPT, letterSpacing });
@@ -57,6 +68,7 @@ const fit = (font, str, room, max) => Math.min(max, Math.floor((max * room) / Ma
  *   accent: cor da linha em itálico (numa prévia, a cor da marca do prospect)
  */
 export async function ogImage({ name, line, photo, out, kicker = 'PRÉVIA DO SITE', logo, accent = '#ef9fb5' }) {
+  await setup();
   const PAD = 84;
   const ROOM = 600;
   const size = fit(fonts.regular, name, ROOM, 104);
