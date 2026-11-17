@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState, type CSSProperties } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
@@ -40,6 +40,22 @@ export default function Hero() {
   const mlEl = useRef<HTMLSpanElement>(null);
   const tempEl = useRef<HTMLSpanElement>(null);
   const [step, setStep] = useState(0);
+  // o 3D só entra depois do primeiro desenho da página: o texto do hero aparece na hora
+  const [gl, setGl] = useState(false);
+  useEffect(() => {
+    let id = 0;
+    const go = () => {
+      const ric = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
+      id = ric ? ric(() => setGl(true), { timeout: 900 }) : window.setTimeout(() => setGl(true), 200);
+    };
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => {
+      window.removeEventListener('load', go);
+      (window as any).cancelIdleCallback?.(id);
+      clearTimeout(id);
+    };
+  }, []);
   const shown = useRef({ ml: 0, temp: 22 });
 
   useGSAP(
@@ -118,15 +134,14 @@ export default function Hero() {
 
   return (
     <section className="hero" id="topo" ref={root} data-tone="dark" aria-label={`${brand.name}, ${brand.descriptor.toLowerCase()}`}>
-      {/* o primeiro quadro do 3D em foto (gerado pelo lab, ?poster=): cobre a espera
-          quando o shader demora mais que o preloader; o canvas aparece por cima */}
-      <picture className="hero__poster" aria-hidden="true">
-        <source media="(max-width: 899px)" srcSet={`${import.meta.env.BASE_URL}media/poster-mobile.webp`} />
-        <img src={`${import.meta.env.BASE_URL}media/poster-desktop.webp`} alt="" fetchPriority="high" decoding="async" />
-      </picture>
-      <Suspense fallback={<div className="hero__gl" />}>
-        <Drink mode={{ kind: 'hero' }} className="hero__gl" />
-      </Suspense>
+
+      {gl ? (
+        <Suspense fallback={<div className="hero__gl" />}>
+          <Drink mode={{ kind: 'hero' }} className="hero__gl" />
+        </Suspense>
+      ) : (
+        <div className="hero__gl" />
+      )}
 
       <h1 className="hero__title" style={FIT} aria-label={`${brand.name}, ${brand.descriptor}`}>
         <span className="hero__word hero__word--a" aria-hidden="true">

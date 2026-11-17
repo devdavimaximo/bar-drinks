@@ -36,9 +36,9 @@ const L_GIN = B + 0.25;
 const L_SYRUP = B + 0.31;
 const L_FULL = levelAt(G, signature.look.fill);
 
-const GIN = sigma('#f3f6f4');
+const GIN = sigma('#f6f3ea');
 const SYRUP = sigma(signature.look.bottom ?? '#9c1238', 0.45);
-const TONIC = sigma('#eef3f2');
+const TONIC = sigma('#f6f3ea');
 
 const mix3 = (a: V3, b: V3, t: number): V3 => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 
@@ -84,7 +84,7 @@ export function buildState(p: number): DrinkState {
   const wheel: V4 = [wp.wheel[0], wp.wheel[1] + (1 - tw) * 1.0, wp.wheel[2], tw > 0 ? wp.wheel[3] : 0];
   const ts = easeOut(span(p, 0.77, 0.83));
   const sp = sprigPose(G);
-  const sprig: V4 = [sp.sprig[0], sp.sprig[1] + (1 - ts) * 1.3, sp.sprig[2], ts > 0 ? 1 : 0];
+  const sprig: V4 = [sp.sprig[0], sp.sprig[1] + (1 - ts) * 1.3, sp.sprig[2], ts > 0 ? FINAL.sprig[3] : 0];
   const berry: V4 = [span(p, 0.8, 0.88), FINAL.berry[1], wallAt(G, L_FULL) * 0.6, 0];
 
   return {
@@ -94,8 +94,8 @@ export function buildState(p: number): DrinkState {
     top,
     bottom,
     mixH,
-    cloud: 0,
-    bubbles: smooth(span(p, 0.57, 0.68)),
+    cloud: FINAL.cloud * smooth(span(p, 0.56, 0.74)),
+    bubbles: FINAL.bubbles * smooth(span(p, 0.57, 0.68)),
     ice: floatIce(ice, level),
     iceRot,
     wheel,

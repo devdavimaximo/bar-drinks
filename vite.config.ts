@@ -69,7 +69,8 @@ function preloader(): Plugin {
   return {
     name: 'preloader',
     transformIndexHtml(src, ctx) {
-      const out = src.replace('<!--preloader-->', html);
+      // sem cena de abertura: o hero aparece direto (o preloader travava a entrada)
+      const out = src.replace('<!--preloader-->', '');
       const files = ctx.bundle ? Object.keys(ctx.bundle) : [];
       const tags = FONTS.map((re) => files.find((f) => re.test(f)))
         .filter((f): f is string => !!f)
@@ -85,7 +86,7 @@ function preloader(): Plugin {
 
 /* ---------- prévias personalizadas (prospects.json) ---------- */
 
-const OG_PHOTO = 'fotos/assinatura.jpg';
+const OG_PHOTO = 'fotos/renan.jpg';
 
 const slugify =(s: string) =>
   s

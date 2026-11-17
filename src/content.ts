@@ -10,18 +10,17 @@ import { personalized, prospect } from './prospect';
 
 export const brand = {
   /** DEMO: nome genérico de propósito; troque pelo nome do cliente */
-  name: prospect.bar || 'Seu Bar',
-  descriptor: 'Coquetelaria para eventos',
-  region: prospect.cidade ? `Drinks autorais · ${prospect.cidade}` : 'Drinks autorais para eventos',
-  instagram: prospect.ig ? `@${prospect.ig}` : '@seubar',
-  instagramUrl: `https://www.instagram.com/${prospect.ig}`,
-  /** DEMO: sem número; troque pelo WhatsApp do cliente (DDI + DDD + número) */
-  whatsapp: prospect.wa,
-  whatsappDisplay: 'Fale pelo WhatsApp',
+  name: prospect.bar || 'Renan Open Drink',
+  descriptor: 'Open bar & barman',
+  region: prospect.cidade ? `Open bar · ${prospect.cidade}` : 'Open bar · Rio de Janeiro',
+  instagram: `@${prospect.ig || 'renanopendrink'}`,
+  instagramUrl: `https://www.instagram.com/${prospect.ig || 'renanopendrink'}`,
+  whatsapp: prospect.wa || '5521997545672',
+  whatsappDisplay: '(21) 99754-5672',
 };
 
 /** o selo fixo no rodapé da tela: deixa claro que é uma proposta, não o site oficial */
-export const demoTag = personalized ? `Prévia do site · ${brand.name}` : 'Demonstração · proposta de site';
+export const demoTag = personalized ? `Prévia do site · ${brand.name}` : `Prévia do site · ${brand.name}`;
 
 export const nav = [
   { id: 'galeria', label: 'Galeria' },
@@ -65,16 +64,51 @@ const LIME = { pulp: '#cfe08a', rind: '#4f7d22' };
 /** DEMO: carta ilustrativa, com drinks comuns em bares de evento; troque pela do cliente */
 export const carta: DrinkGroup[] = [
   {
+    id: 'caipirinhas',
+    title: 'Caipirinhas',
+    subtitle: 'A especialidade do Renan, com fruta fresca',
+    drinks: [
+      {
+        slug: 'caipirinha',
+        name: 'Caipirinha de Limão',
+        base: 'Cachaça',
+        notes: 'Limão-taiti espremido na hora com açúcar, cachaça e muito gelo. A clássica, do jeito do Renan.',
+        signature: true,
+        look: { glass: 'copa', color: '#eef2cf', bottom: '#b9cf62', fill: 0.74, cloud: 0.4, ice: true, wheel: LIME, berries: { color: '#5d8a24', size: 0.034 } },
+      },
+      {
+        slug: 'caipi-morango',
+        name: 'Caipirinha de Morango',
+        base: 'Cachaça ou vodka',
+        notes: 'Morango macerado com açúcar e limão. A mais pedida da estação.',
+        look: { glass: 'copa', color: '#ee6a7c', bottom: '#a8142e', fill: 0.74, cloud: 0.35, ice: true, berries: { color: '#c21d35', size: 0.044 } },
+      },
+      {
+        slug: 'caipi-abacaxi',
+        name: 'Caipirinha de Abacaxi',
+        base: 'Cachaça ou vodka',
+        notes: 'Abacaxi maduro em pedaços, amassado com açúcar. Doce e refrescante.',
+        look: { glass: 'copa', color: '#f6dc78', bottom: '#e0b22a', fill: 0.74, cloud: 0.45, ice: true, berries: { color: '#f2c94c', size: 0.04 } },
+      },
+      {
+        slug: 'caipi-maracuja',
+        name: 'Caipirinha de Maracujá',
+        base: 'Cachaça ou vodka',
+        notes: 'Polpa de maracujá com as sementes, açúcar e gelo de sobra.',
+        look: { glass: 'copa', color: '#f4d35a', bottom: '#d9a61c', fill: 0.74, cloud: 0.45, ice: true, berries: { color: '#1e140b', size: 0.016 } },
+      },
+    ],
+  },
+  {
     id: 'autorais',
-    title: 'Autorais',
-    subtitle: 'Criados aqui, servidos só aqui',
+    title: 'Outros da estação',
+    subtitle: 'Fruta fresca, direto do bowl para o copo',
     drinks: [
       {
         slug: 'hibisco',
-        name: 'Gin, Hibisco & Tônica',
-        base: 'Gin London Dry',
-        notes: 'Xarope de hibisco da casa, tônica, alecrim, limão-siciliano e pimenta-rosa.',
-        signature: true,
+        name: 'Morango & Soda',
+        base: 'Vodka',
+        notes: 'Morango macerado, vodka, soda, hortelã e limão. O mais pedido do balcão.',
         look: {
           glass: 'copa',
           color: '#f27e9d',
@@ -89,9 +123,9 @@ export const carta: DrinkGroup[] = [
       },
       {
         slug: 'jardim',
-        name: 'Jardim',
-        base: 'Gin',
-        notes: 'Pepino, limão, manjericão e tônica. Fresco do primeiro ao último gole.',
+        name: 'Caipivodka de Kiwi',
+        base: 'Vodka',
+        notes: 'Kiwi fresco amassado na hora, limão e gelo de sobra.',
         look: {
           glass: 'copa',
           color: '#d9efb4',
@@ -104,9 +138,9 @@ export const carta: DrinkGroup[] = [
       },
       {
         slug: 'maracuja',
-        name: 'Maracujá & Alecrim',
+        name: 'Maracujá com Vodka',
         base: 'Vodka',
-        notes: 'Maracujá fresco, mel de flor de laranjeira e alecrim tostado.',
+        notes: 'Maracujá batido com vodka e gelo.',
         look: {
           glass: 'copa',
           color: '#f4d35a',
@@ -120,9 +154,9 @@ export const carta: DrinkGroup[] = [
       },
       {
         slug: 'amora',
-        name: 'Amora & Lavanda',
-        base: 'Gin',
-        notes: 'Amoras maceradas, xarope de lavanda e limão-siciliano.',
+        name: 'Uva & Amora',
+        base: 'Vodka',
+        notes: 'Uva e amora maceradas, limão e um toque de açúcar.',
         look: {
           glass: 'copa',
           color: '#a565c2',
@@ -137,28 +171,28 @@ export const carta: DrinkGroup[] = [
   },
   {
     id: 'classicos',
-    title: 'Clássicos',
-    subtitle: 'Receitas que atravessaram o século',
+    title: 'Clássicos do balcão',
+    subtitle: 'Os que nunca saem da festa',
     drinks: [
       {
         slug: 'clover',
-        name: 'Clover Club',
-        base: 'Gin',
-        notes: 'Framboesa, limão e clara batida até virar espuma de seda.',
+        name: 'Batida de Morango',
+        base: 'Vodka',
+        notes: 'Morango, leite condensado e vodka, batida e servida na taça.',
         look: { glass: 'coupe', color: '#e8587d', fill: 0.86, cloud: 0.55, foam: 0.045, berries: { color: '#b0203a', size: 0.045 } },
       },
       {
         slug: 'daiquiri',
-        name: 'Daiquiri',
-        base: 'Rum branco',
-        notes: 'Rum, limão e açúcar. Três ingredientes, nenhum lugar para errar.',
+        name: 'Caipivodka de Limão',
+        base: 'Vodka',
+        notes: 'Limão-taiti, açúcar e vodka. Simples e certeira.',
         look: { glass: 'coupe', color: '#eef2cf', fill: 0.86, cloud: 0.6, wheel: { ...LIME, float: true } },
       },
       {
-        slug: 'caipirinha',
-        name: 'Caipirinha de copa',
-        base: 'Cachaça envelhecida',
-        notes: 'Limão-taiti, açúcar demerara e gelo em cubos grandes, servida na taça.',
+        slug: 'caipi-classica',
+        name: 'Caipirinha na taça',
+        base: 'Cachaça',
+        notes: 'A original: limão-taiti, açúcar e cachaça.',
         look: { glass: 'copa', color: '#e9f0c6', fill: 0.62, cloud: 0.35, ice: true, wheel: LIME },
       },
     ],
@@ -170,7 +204,7 @@ export const carta: DrinkGroup[] = [
     drinks: [
       {
         slug: 'soda',
-        name: 'Soda de Frutas Vermelhas',
+        name: 'Soda de Morango',
         base: 'Sem álcool',
         notes: 'Xarope de frutas vermelhas da casa, limão e água com gás.',
         look: { glass: 'copa', color: '#e8476a', bottom: '#86102c', fill: 0.78, bubbles: 1, ice: true, berries: { color: '#a3122f', size: 0.04 } },
@@ -199,9 +233,9 @@ export const signature = carta.flatMap((g) => g.drinks).find((d) => d.signature)
 /* ---------- hero: o drink-assinatura montado pelo scroll (ver gl/build.ts) ---------- */
 
 export const hero = {
-  kicker: 'Coquetelaria para eventos',
-  lede: 'Bar de drinks autorais para casamentos, 15 anos e eventos corporativos. Carta exclusiva, bartenders e estrutura completa.',
-  hint: 'Role e veja o drink nascer',
+  kicker: 'Open bar & barman · RJ',
+  lede: 'Caipirinha feita na hora, com limão, morango, abacaxi e maracujá frescos à mostra no balcão. Open bar com barman para aniversários, churrascos, festas juninas e casamentos no Rio.',
+  hint: 'Role e veja a caipirinha nascer',
   /** o drink do hero é 3D: avisar e levar até as fotos de verdade */
   note: 'Animação ilustrativa',
   noteCta: 'ver fotos',
@@ -212,31 +246,31 @@ export const hero = {
 /** os seis tempos da montagem: `at` é onde cada um começa no scroll (0..1, ver gl/build.ts); `ml` e `temp` alimentam a ficha */
 export const build = {
   steps: [
-    { at: 0, name: 'A taça', line: 'Tudo começa no copo certo.', text: 'Taça balão de cristal, gelada antes de receber qualquer coisa.', item: 'Taça balão gelada', ml: 0, temp: 6 },
-    { at: 0.07, name: 'O gelo', line: 'Gelo cristalino, em cubos grandes.', text: 'Derrete devagar e não deixa o drink aguado no meio da festa.', item: '3 cubos de gelo cristalino', ml: 0, temp: 2 },
-    { at: 0.22, name: 'O gin', line: 'A base.', text: 'Gin London Dry, medido no dosador. Nada no olho.', item: '50 ml de gin London Dry', ml: 50, temp: 4 },
-    { at: 0.38, name: 'O hibisco', line: 'A cor vem da flor.', text: 'Xarope de hibisco feito pela casa a cada evento. Assenta no fundo, por enquanto.', item: '20 ml de xarope de hibisco', ml: 70, temp: 4 },
-    { at: 0.54, name: 'A tônica', line: 'Pela colher bailarina.', text: 'A tônica escorre pela colher para guardar o gás, e o hibisco sobe em degradê.', item: '120 ml de tônica', ml: 190, temp: 3 },
-    { at: 0.74, name: 'O toque', line: 'Perfume antes do primeiro gole.', text: 'Alecrim, rodela de limão-siciliano e pimenta-rosa.', item: 'Alecrim, limão e pimenta-rosa', ml: 190, temp: 3 },
+    { at: 0, name: 'O copo', line: 'Tudo começa no copo certo.', text: 'Taça gelada, pronta antes de o convidado chegar no balcão.', item: 'Taça gelada', ml: 0, temp: 6 },
+    { at: 0.07, name: 'O gelo', line: 'Muito gelo, sempre.', text: 'Gelo de sobra do começo ao fim da festa. Caipirinha quente não sai do balcão.', item: 'Gelo em cubos', ml: 0, temp: 2 },
+    { at: 0.22, name: 'A cachaça', line: 'Na medida.', text: 'Cachaça dosada, nada no olho. Quem prefere, troca por vodka.', item: '50 ml de cachaça', ml: 50, temp: 4 },
+    { at: 0.38, name: 'O limão', line: 'Espremido na hora, com açúcar.', text: 'Limão-taiti cortado na frente do convidado, amassado com açúcar. Desce e assenta no fundo.', item: '1 limão-taiti e 2 colheres de açúcar', ml: 80, temp: 4 },
+    { at: 0.54, name: 'A mexida', line: 'Completa e mexe.', text: 'Mais um pouco de cachaça e a colher sobe o limão pelo copo inteiro. Fica turva, do jeito certo.', item: 'Completa com cachaça e mexe', ml: 160, temp: 3 },
+    { at: 0.74, name: 'O toque', line: 'Do jeito do Renan.', text: 'Pedaços de limão por cima e a rodela na borda. Pronta para a foto.', item: 'Rodela e pedaços de limão', ml: 160, temp: 3 },
   ],
-  tag: 'Assinatura da casa',
-  priceNote: 'Na carta autoral',
+
+  tag: 'A especialidade',
+  priceNote: 'Também de morango, abacaxi e maracujá',
 };
 
 export const manifesto = {
   label: 'O bar',
   title: ['O bar é onde', 'a festa', 'acontece.'],
-  body: 'É no balcão que os convidados se encontram, brindam e voltam a noite inteira. Por isso cada drink é pensado para o seu evento: carta própria, ingredientes frescos, gelo cristalino e bartenders que sabem receber.',
+  body: 'É no balcão que a galera se encontra, brinda e volta a noite inteira. O Renan monta a estação com as frutas à mostra, o balcão iluminado e a equipe pronta para servir caipirinha, caipivodka e drink colorido até a última música.',
   pillars: [
-    { k: 'Carta autoral', v: 'criada para cada evento' },
-    { k: 'Bartenders', v: 'uniformizados e treinados' },
-    { k: 'Estrutura completa', v: 'balcão, gelo, copos e insumos' },
+    { k: 'Estação de drinks', v: 'frutas frescas à mostra no balcão' },
+    { k: 'Barman & equipe', v: 'atendimento do começo ao fim' },
+    { k: 'Estrutura completa', v: 'balcão iluminado, gelo e copos' },
   ],
-  /** DEMO: números ilustrativos; troque pelos do cliente */
   facts: [
-    { n: 1, suffix: '', l: 'bartender a cada 60 convidados' },
-    { n: 450, suffix: '+', l: 'eventos atendidos' },
-    { n: drinkCount, suffix: '', l: 'drinks na carta' },
+    { n: 21, suffix: '', l: 'DDD: atendemos o Rio e região' },
+    { n: drinkCount, suffix: '', l: 'drinks na carta de exemplo' },
+    { n: 1, suffix: '', l: 'mensagem no WhatsApp para orçar' },
   ],
 };
 
@@ -249,14 +283,14 @@ export const servicos = {
   title: ['Tudo o que o bar', 'leva para a festa.'],
   body: 'A carta é só o começo. Monte o bar do seu evento com os serviços que fazem os convidados lembrarem da noite.',
   items: [
-    { k: 'Bar de drinks autorais', v: 'Carta criada para o evento, servida da recepção ao último brinde.' },
-    { k: 'Drink assinatura', v: 'Um drink com o nome do casal, da debutante ou da empresa.', extra: 'assinatura' },
-    { k: 'Bar de gin', v: 'Taça balão, tônicas especiais e especiarias para montar na hora.' },
-    { k: 'Welcome drink', v: 'Coupes servidas na chegada, enquanto os convidados se encontram.' },
-    { k: 'Carta sem álcool', v: 'Mocktails tão bonitos quanto os clássicos, para todas as idades.', extra: 'semalcool' },
-    { k: 'Show de flair', v: 'Malabarismo com garrafas e coqueteleira: meia hora de espetáculo.', extra: 'flair' },
-    { k: 'Taças de cristal', v: 'Cristal no lugar do vidro comum, para as fotos e para o brinde.', extra: 'cristal' },
-    { k: 'Estrutura completa', v: 'Balcão, gelo cristalino, copos, insumos e equipe uniformizada.' },
+    { k: 'Open bar', v: 'Drinks à vontade durante a festa, com barman no balcão.' },
+    { k: 'Estação de drinks', v: 'Frutas frescas expostas em bowls: o convidado escolhe e o drink sai na hora.' },
+    { k: 'Caipirinhas & caipivodkas', v: 'Limão, morango, maracujá, kiwi, abacaxi e o que a festa pedir.' },
+    { k: 'Drink com o nome', v: 'Um drink com o nome do aniversariante, do casal ou da empresa.', extra: 'assinatura' },
+    { k: 'Sem álcool', v: 'Drinks coloridos sem álcool para a criançada e quem está dirigindo.', extra: 'semalcool' },
+    { k: 'Churrasco & festa junina', v: 'Bar para o churrasco de domingo e para o arraiá, com drink quente na fogueira.' },
+    { k: 'Equipe', v: 'Barman e ajudantes para festa grande, sem fila no bar.' },
+    { k: 'Estrutura completa', v: 'Balcão com LED, gelo, copos, frutas e insumos. Você só recebe os convidados.' },
   ],
 };
 
@@ -280,7 +314,7 @@ export const pitch: Record<string, [string, string]> = {
 export const cartaCopy = {
   label: 'Carta',
   title: ['Escolha', 'pela cor.'],
-  body: 'Cada drink da carta aparece aqui como vai chegar ao convidado: a taça, a cor e a guarnição. Toque em um nome para servir.',
+  body: 'Carta de exemplo: cada drink aparece como chega ao convidado. Toque em um nome para servir. A carta final é montada com você.',
   demo: 'Simulação 3D · toque para servir',
 };
 
@@ -288,39 +322,39 @@ export const cartaCopy = {
 
 export const eventos = {
   label: 'Eventos',
-  title: ['Um bar para', 'cada celebração.'],
+  title: ['Um bar para', 'cada festa.'],
   items: [
     {
+      id: 'aniversario',
+      name: 'Aniversários',
+      line: 'O bar que vira o ponto de encontro.',
+      text: 'Estação de drinks com as frutas à mostra, balcão iluminado e drink colorido para a foto. Em casa, no salão ou no condomínio.',
+      meta: ['festas pequenas e grandes', 'sob consulta'],
+      tags: ['Estação de frutas', 'Balcão com LED', 'Sem álcool para as crianças'],
+    },
+    {
+      id: 'churrasco',
+      name: 'Churrascos',
+      line: 'Carne na brasa, caipirinha no copo.',
+      text: 'O churrasco de família ou da firma com barman de verdade: caipirinha, caipivodka e drinks gelados a tarde inteira.',
+      meta: ['na sua casa ou no sítio', 'sob consulta'],
+      tags: ['Caipirinhas', 'Muito gelo', 'Montagem rápida'],
+    },
+    {
+      id: 'junina',
+      name: 'Festas juninas',
+      line: 'Arraiá com drink de respeito.',
+      text: 'Quentão, drinks com amendoim e frutas da estação. O bar entra no clima da festa sem perder o capricho.',
+      meta: ['junho e julho', 'sob consulta'],
+      tags: ['Drinks juninos', 'Decoração no clima', 'Para toda a família'],
+    },
+    {
       id: 'casamento',
-      name: 'Casamentos',
-      line: 'Do welcome drink ao último brinde.',
-      text: 'Carta desenhada com os noivos, drink assinatura com o nome do casal e bar de gin para a pista. A gente chega antes da cerimônia e sai depois da última música.',
-      meta: ['80 a 500 convidados', '5 a 7 horas'],
-      tags: ['Degustação para os noivos', 'Drink assinatura', 'Welcome drink'],
-    },
-    {
-      id: 'quinze',
-      name: '15 anos',
-      line: 'A carta sem álcool que ninguém esquece.',
-      text: 'Drinks sem álcool tão bonitos quanto os clássicos, com controle por pulseira para os adultos. Cor, brilho e foto para o feed.',
-      meta: ['100 a 350 convidados', '5 horas'],
-      tags: ['Carta sem álcool', 'Pulseira para maiores de 18', 'Drinks com glitter comestível'],
-    },
-    {
-      id: 'corporativo',
-      name: 'Corporativo',
-      line: 'A marca da empresa, dentro do copo.',
-      text: 'Lançamentos, confraternizações, feiras e convenções. Drinks nas cores da marca, cardápio com logotipo e nota fiscal.',
-      meta: ['50 a 1.000 pessoas', 'sob medida'],
-      tags: ['Drinks nas cores da marca', 'Nota fiscal', 'Montagem rápida'],
-    },
-    {
-      id: 'celebracoes',
-      name: 'Aniversários & celebrações',
-      line: 'O bar de casamento, na sua casa.',
-      text: 'Aniversários, bodas, formaturas e jantares. Bar compacto que cabe na varanda, com a mesma carta e o mesmo cuidado.',
-      meta: ['a partir de 40 convidados', '4 a 5 horas'],
-      tags: ['Bar compacto', 'Em casa ou no salão', 'Carta enxuta'],
+      name: 'Casamentos & 15 anos',
+      line: 'Do primeiro brinde à última música.',
+      text: 'Open bar completo com equipe, drink com o nome dos noivos ou da debutante e carta sem álcool para os menores.',
+      meta: ['equipe conforme os convidados', '5 a 7 horas'],
+      tags: ['Drink com o nome', 'Equipe completa', 'Carta sem álcool'],
     },
   ],
 };
@@ -335,9 +369,9 @@ export const criador = {
   label: 'Drink assinatura',
   title: ['Crie o drink', 'do seu evento.'],
   body: 'Escolha a base, o sabor e a guarnição, e dê um nome. O drink aparece aqui do jeito que vai chegar aos convidados, e a receita segue junto com o pedido.',
-  namePlaceholder: 'Ana & Pedro',
+  namePlaceholder: 'Niver da Ana',
   fallbackName: 'O drink de vocês',
-  bases: ['Gin', 'Vodka', 'Rum', 'Cachaça', 'Sem álcool'],
+  bases: ['Vodka', 'Cachaça', 'Gin', 'Rum', 'Sem álcool'],
   flavors: [
     { id: 'hibisco', name: 'Hibisco', color: '#f27e9d', bottom: '#9c1238', berry: '#c3304f' },
     { id: 'vermelhas', name: 'Frutas vermelhas', color: '#e8476a', bottom: '#86102c', berry: '#a3122f' },
@@ -369,7 +403,7 @@ export const monte = {
   label: 'Monte seu bar',
   title: ['Monte o bar', 'da sua festa.'],
   body: 'Escolha o formato, o número de convidados e o pacote. A conta sai na hora e chega pronta no nosso WhatsApp.',
-  kinds: ['Casamento', '15 anos', 'Corporativo', 'Aniversário'],
+  kinds: ['Aniversário', 'Churrasco', 'Festa junina', 'Casamento / 15 anos'],
   guests: { min: 40, max: 500, step: 10, initial: 150 },
   hours: [4, 5, 6, 7],
   baseHours: 5,
@@ -397,21 +431,21 @@ export const monte = {
 
 export const galeria = {
   label: 'Galeria',
-  title: ['Noites que', 'a gente serviu.'],
-  note: 'Fotos ilustrativas · substituir pelas do cliente',
+  title: ['Festas que', 'o Renan serviu.'],
+  note: 'Fotos do @renanopendrink',
   photos: [
-    { src: 'casamento', caption: 'Casamento', meta: 'boas-vindas com drink rosé', tone: 'rose' },
-    { src: 'welcome', caption: 'Welcome drink', meta: 'coupes na chegada dos convidados', tone: 'gold' },
-    { src: 'assinatura', caption: 'Gin tônica de hibisco', meta: 'a assinatura da casa', tone: 'rose' },
-    { src: 'torre', caption: 'Torre de taças', meta: 'o brinde dos noivos', tone: 'gold' },
-    { src: 'bar-de-gin', caption: 'Bar de gin', meta: 'servido na taça balão', tone: 'green' },
-    { src: 'celebracao', caption: 'Aniversários & 15 anos', meta: 'o brinde na pista', tone: 'violet' },
+    { src: 'frutas', caption: 'Estação de frutas', meta: 'melancia, abacaxi, morango e limão no balcão', tone: 'gold' },
+    { src: 'renan', caption: 'O Renan no balcão', meta: 'coqueteleira na mão, LED ligado', tone: 'rose' },
+    { src: 'equipe', caption: 'Equipe', meta: 'atendimento do começo ao fim', tone: 'gold' },
+    { src: 'estacao', caption: 'Open bar', meta: 'caipirinha e caipivodka na hora', tone: 'rose' },
+    { src: 'led-azul', caption: 'Balcão iluminado', meta: 'gin, vodka e frutas frescas', tone: 'violet' },
+    { src: 'noite', caption: 'Festa à noite', meta: 'o bar acende junto com a pista', tone: 'gold' },
   ],
   /** DEMO: depoimentos ilustrativos; troque pelos do cliente */
   quotes: [
-    { text: 'Os convidados até hoje falam do drink com o nosso nome. O bar foi o lugar mais cheio da festa.', who: 'Noivos', where: 'Casamento, 180 convidados' },
-    { text: 'Pontualidade, equipe educada e uma carta sem álcool que fez sucesso com os adolescentes e com os pais.', who: 'Mãe da aniversariante', where: '15 anos, 250 convidados' },
-    { text: 'Fizeram drinks nas cores da marca para o lançamento. Virou a foto mais postada do evento.', who: 'Coordenação de eventos', where: 'Lançamento corporativo' },
+    { text: 'Espaço reservado para o depoimento de um cliente do Renan.', who: 'Cliente', where: 'Aniversário' },
+    { text: 'Espaço reservado para o depoimento de um cliente do Renan.', who: 'Cliente', where: 'Churrasco' },
+    { text: 'Espaço reservado para o depoimento de um cliente do Renan.', who: 'Cliente', where: 'Festa' },
   ],
 };
 
@@ -441,7 +475,7 @@ export const faq = [
   },
   {
     q: 'Vocês atendem fora da cidade?',
-    a: 'Atendemos a cidade e a região. A taxa de deslocamento é calculada a partir do endereço do evento.',
+    a: 'Atendemos o Rio de Janeiro e a região. A taxa de deslocamento é calculada a partir do endereço do evento.',
   },
 ];
 

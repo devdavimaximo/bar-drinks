@@ -157,7 +157,7 @@ export const fragment = (lite: boolean) => /* glsl */ `#version 300 es
   }
 
   vec3 wall(vec3 rd) {
-    vec3 g = mix(vec3(0.004, 0.007, 0.006), vec3(0.008, 0.013, 0.011), smoothstep(-0.25, 0.45, rd.y));
+    vec3 g = mix(vec3(0.008, 0.005, 0.003), vec3(0.016, 0.010, 0.006), smoothstep(-0.25, 0.45, rd.y));
     // o halo quente do contraluz, atrás da taça
     float hl = max(dot(rd, normalize(vec3(0.12, 0.2, -1.0))), 0.0);
     g += vec3(0.17, 0.13, 0.09) * pow(hl, 70.0) + vec3(0.014, 0.011, 0.008) * pow(hl, 12.0);
@@ -178,7 +178,7 @@ export const fragment = (lite: boolean) => /* glsl */ `#version 300 es
 
   vec3 counter(vec3 p, vec3 rd) {
     // pedra preta acetinada: só uma variação larga de tom e o reflexo borrado do salão
-    vec3 base = vec3(0.007, 0.009, 0.008) * (0.8 + 0.4 * noise(p * vec3(0.8, 1.0, 1.6)));
+    vec3 base = vec3(0.012, 0.008, 0.005) * (0.8 + 0.4 * noise(p * vec3(0.8, 1.0, 1.6)));
     vec3 rr = reflect(rd, vec3(0.0, 1.0, 0.0));
     float fre = 0.04 + 0.96 * pow(1.0 - abs(rd.y), 5.0);
     vec3 col = base + wall(rr) * fre * 0.4 + envR(rr) * fre * 0.05;

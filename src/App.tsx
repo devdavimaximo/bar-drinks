@@ -65,6 +65,14 @@ export default function App() {
       gsap.ticker.lagSmoothing(0);
     }
 
+    // seções com content-visibility: ao renderizar de verdade mudam de altura, então os gatilhos se remedem
+    let cvT = 0;
+    const onCv = () => {
+      clearTimeout(cvT);
+      cvT = window.setTimeout(() => ScrollTrigger.refresh(), 120);
+    };
+    document.addEventListener('contentvisibilityautostatechange', onCv, true);
+
     const off = onReady(() => {
       document.documentElement.classList.remove('is-loading');
       lenis?.start();
@@ -82,6 +90,8 @@ export default function App() {
 
     return () => {
       off();
+      document.removeEventListener('contentvisibilityautostatechange', onCv, true);
+      clearTimeout(cvT);
       window.removeEventListener('pointermove', move);
       gsap.ticker.remove(tick);
       lenis?.destroy();

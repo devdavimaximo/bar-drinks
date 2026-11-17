@@ -1,19 +1,16 @@
 <!doctype html>
-<html lang="pt-BR" class="is-loading">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Seu Bar · Demonstração de site</title>
-    <meta name="description" content="Seu Bar: modelo de site para bares de drinks em eventos. Coquetelaria autoral para casamentos, 15 anos e eventos corporativos, com bartenders e estrutura completa." />
+    <title>Renan Open Drink · Open bar & barman no RJ</title>
+    <meta name="description" content="Renan Open Drink: open bar e estação de drinks com frutas frescas para aniversários, churrascos, festas juninas e casamentos no Rio de Janeiro." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#0c1210" />
+    <meta name="theme-color" content="#1a1009" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Seu Bar · Demonstração de site" />
+    <meta property="og:title" content="Renan Open Drink · Open bar & barman no RJ" />
     <meta property="og:description" content="O bar é onde a festa acontece." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <!-- a foto do hero (primeiro quadro do 3D) chega junto com o preloader -->
-    <link rel="preload" as="image" href="./media/poster-desktop.webp" media="(min-width: 900px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="./media/poster-mobile.webp" media="(max-width: 899px)" fetchpriority="high" />
     <!--
       Preloader: HTML + CSS inline, pinta no primeiro quadro, antes de qualquer JS.
       A entrada é CSS puro; Preloader.tsx só adiciona .is-out quando o drink compilou.
@@ -21,11 +18,11 @@
     -->
     <style>
       :root {
-        --night: #0b110f;
+        --night: #1a1009;
         --bone: #efe7da;
         --bone-2: rgba(239, 231, 218, 0.72);
         --brass-2: #d6b87f;
-        --rose-2: #ef9fb5;
+        --rose-2: #ecd08a;
         --serif: 'Bodoni Moda Variable', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
         --p2io: cubic-bezier(0.45, 0, 0.55, 1);
         --p2o: cubic-bezier(0.33, 1, 0.68, 1);
@@ -33,12 +30,12 @@
         --xo: cubic-bezier(0.16, 1, 0.3, 1);
         --xio: cubic-bezier(0.87, 0, 0.13, 1);
       }
-      html { background: #0b110f; }
+      html { background: #1a1009; }
       html.is-loading, html.is-loading body { overflow: hidden; }
       .preloader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; color: var(--bone); }
       .preloader__curtain {
         position: absolute; inset: 0;
-        background: radial-gradient(60% 50% at 50% 55%, #16211d, var(--night) 70%), var(--night);
+        background: radial-gradient(60% 50% at 50% 55%, #2e1d10, var(--night) 70%), var(--night);
         box-shadow: inset 0 -1px 0 rgba(214, 184, 127, 0.3);
       }
       .preloader__center { position: relative; display: grid; justify-items: center; gap: 24px; }

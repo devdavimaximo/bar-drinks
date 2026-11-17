@@ -1,34 +1,34 @@
 /* ==========================================================================
-   Seu Bar · modelo de site para bares de drinks em eventos
+   Renan Open Drink · open bar & barman (RJ)
    Noite de verde-garrafa, papel de cardápio, latão e o rosa do hibisco.
    Bodoni Moda (o cardápio de bar clássico) + Manrope.
    ========================================================================== */
 
 :root {
-  --night: #0b110f;
-  --night-2: #111a17;
-  --night-3: #18231f;
-  --bone: #efe7da;
-  --bone-2: rgba(239, 231, 218, 0.72);
-  --bone-3: rgba(239, 231, 218, 0.45);
-  --line-d: rgba(239, 231, 218, 0.14);
-  --line-d2: rgba(239, 231, 218, 0.26);
+  --night: #1a1009;
+  --night-2: #24170d;
+  --night-3: #312012;
+  --bone: #f3e9d2;
+  --bone-2: rgba(243, 233, 210, 0.72);
+  --bone-3: rgba(243, 233, 210, 0.45);
+  --line-d: rgba(243, 233, 210, 0.14);
+  --line-d2: rgba(243, 233, 210, 0.26);
 
-  --paper: #f1ebe1;
-  --paper-2: #e7dfd1;
-  --ink: #14201b;
-  --ink-2: rgba(20, 32, 27, 0.7);
-  --ink-3: rgba(20, 32, 27, 0.45);
-  --line: rgba(20, 32, 27, 0.14);
-  --line-2: rgba(20, 32, 27, 0.26);
+  --paper: #efe1c8;
+  --paper-2: #e2cfae;
+  --ink: #2a1a0e;
+  --ink-2: rgba(42, 26, 14, 0.7);
+  --ink-3: rgba(42, 26, 14, 0.45);
+  --line: rgba(42, 26, 14, 0.14);
+  --line-2: rgba(42, 26, 14, 0.26);
 
-  --brass: #9c7837;
-  --brass-2: #d6b87f;
-  --rose: #c8456b;
-  --rose-2: #ef9fb5;
+  --brass: #a07a2c;
+  --brass-2: #e2c27a;
+  --rose: #d0a646;
+  --rose-2: #ecd08a;
   /* o rosa dos títulos no papel claro: um tom mais fundo para o itálico não apagar */
-  --rose-ink: #b23459;
-  --ruby: #8e1636;
+  --rose-ink: #8a6418;
+  --ruby: #b3261e;
 
   /* fontes servidas pelo próprio site (@fontsource, ver main.tsx): sem ida ao Google bloqueando a tela */
   --serif: 'Bodoni Moda Variable', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
@@ -157,7 +157,7 @@ main {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--bone-2);
-  background: rgba(11, 17, 15, 0.86);
+  background: rgba(26, 16, 9, 0.86);
   padding: 5px 12px;
   border-radius: 999px;
   pointer-events: none;
@@ -399,7 +399,7 @@ section {
 }
 
 .hud.is-dark::before {
-  background: linear-gradient(rgba(11, 17, 15, 0.9) 45%, rgba(11, 17, 15, 0));
+  background: linear-gradient(rgba(26, 16, 9, 0.9) 45%, rgba(26, 16, 9, 0));
 }
 
 .hud.is-open::before {
@@ -839,7 +839,7 @@ section {
   padding: 9px 16px;
   border: 1px solid var(--line-d);
   border-radius: 999px;
-  background: rgba(11, 17, 15, 0.62);
+  background: rgba(26, 16, 9, 0.62);
   white-space: nowrap;
 }
 
@@ -880,7 +880,7 @@ section {
   border: 1px solid var(--line-d);
   border-radius: 18px;
   /* sem backdrop-filter: em cima do canvas o desfoque seria refeito a cada quadro do 3D */
-  background: linear-gradient(160deg, rgba(20, 30, 26, 0.86), rgba(11, 17, 15, 0.8));
+  background: linear-gradient(160deg, rgba(44, 28, 16, 0.86), rgba(26, 16, 9, 0.8));
   visibility: hidden;
 }
 
@@ -1394,7 +1394,7 @@ section {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(11, 17, 15, 0.78);
+  background: rgba(26, 16, 9, 0.78);
 }
 
 html.menu-open .carta__stage.is-pip {
@@ -1618,7 +1618,7 @@ html.menu-open .carta__stage.is-pip {
   padding: 16px 18px 18px;
   border: 1px dashed var(--brass-2);
   border-radius: 14px;
-  background: rgba(11, 17, 15, 0.92);
+  background: rgba(26, 16, 9, 0.92);
   color: var(--bone);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   pointer-events: none;
@@ -1916,7 +1916,7 @@ html.pitch-off .pitch-note {
     position: absolute;
     z-index: -1;
     inset: calc(-1 * (var(--hud-h) + 8px)) calc(-1 * var(--pad)) -18px;
-    background: linear-gradient(to bottom, var(--night-2) 92%, rgba(17, 26, 23, 0));
+    background: linear-gradient(to bottom, var(--night-2) 92%, rgba(36, 23, 13, 0));
   }
 
   .criador__cap {
@@ -2541,7 +2541,7 @@ html.pitch-off .pitch-note {
 
 .tone--gold {
   --t1: rgba(214, 184, 127, 0.4);
-  --t2: rgba(239, 231, 218, 0.2);
+  --t2: rgba(243, 233, 210, 0.2);
   --t3: rgba(156, 120, 55, 0.4);
 }
 
@@ -2598,7 +2598,7 @@ html.pitch-off .pitch-note {
   position: absolute;
   inset: -80px -16px -14px;
   z-index: -1;
-  background: linear-gradient(transparent, rgba(11, 17, 15, 0.75));
+  background: linear-gradient(transparent, rgba(26, 16, 9, 0.75));
 }
 
 .quotes {
@@ -2962,7 +2962,7 @@ html.pitch-off .pitch-note {
     width: auto;
     padding: 18px;
     border-radius: 16px;
-    background: rgba(11, 17, 15, 0.8);
+    background: rgba(26, 16, 9, 0.8);
   }
 
   .hero__name {
@@ -3117,4 +3117,11 @@ html.pitch-off .pitch-note {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* desempenho: o navegador só calcula estilo e layout de uma seção quando ela chega
+   perto da tela. Antes, o primeiro gsap.set forçava o layout da página inteira (~0,6 s no celular). */
+.galeria, .casa, .servicos, .carta, .eventos, .criador, .monte, .faq, .contato {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
 }
